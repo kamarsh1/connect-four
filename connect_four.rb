@@ -6,6 +6,7 @@ class Game
     @game_over = false
     @player1 = false
     @column = column
+    @valid_move = false
   end
 
   def play
@@ -16,6 +17,7 @@ class Game
 
       pick_a_column
       validate_move
+        # place_chip_in_column
       @valid_move ? place_chip_in_column : invalid_selection
 
       # take this out once game_over gets set in the right place
@@ -37,7 +39,7 @@ class Game
     end
   end
 
-  def validate_move
+  def valid_move?
     @valid_move = @column.between?(1,7) && @game_board[0][@column-1] == '...'
   end
 
