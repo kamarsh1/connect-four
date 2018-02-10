@@ -22,6 +22,9 @@ describe 'Game' do
       before do
         allow(game).to receive(:display_board)
         allow(game).to receive(:pick_a_column)
+        allow(game).to receive(:validate_move)
+        allow(game).to receive(:place_chip_in_column)
+        allow(game).to receive(:invalid_selection)
       end
 
       it 'toggles player1' do
@@ -40,9 +43,21 @@ describe 'Game' do
         expect(game).to have_received(:display_board)
       end
 
-      it 'calls pick a column' do
+      it 'picks a column' do
         game.play
         expect(game).to have_received(:pick_a_column)
+      end
+
+      it 'validates the move' do
+        game.play
+        expect(game).to have_received(:validate_move)
+      end
+
+      describe 'when it is NOT a valid move' do
+        it 'displays invalid selection' do
+          game.play
+          expect(game).to have_received(:invalid_selection)
+        end
       end
     end
   end
@@ -85,6 +100,12 @@ describe 'Game' do
       # it 'prints a message' do       # figure out #{game.column}
       #   expect { game.pick_a_column }.to output("Computer picked #{game.column}\n").to_stdout
       # end
+    end
+  end
+
+  describe '#invalid_selection' do
+    it 'prints a message' do
+      expect { game.invalid_selection }.to output("Invalid Selection\n").to_stdout
     end
   end
 end

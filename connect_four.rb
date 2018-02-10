@@ -15,6 +15,8 @@ class Game
       display_board
 
       pick_a_column
+      validate_move
+      @valid_move ? place_chip_in_column : invalid_selection
 
       # take this out once game_over gets set in the right place
       @game_over = true
@@ -34,7 +36,19 @@ class Game
       puts "Computer picked #{@column}"
     end
   end
+
+  def validate_move
+    @valid_move = @column.between?(1,7) && @game_board[0][@column-1] == '...'
+  end
+
+  def place_chip_in_column
+
+  end
+
+  def invalid_selection
+    puts 'Invalid Selection'
+  end
 end
 
-game = Game.new
-game.play
+# game = Game.new
+# game.play
