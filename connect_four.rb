@@ -26,10 +26,13 @@ class Game
   end
 
   def pick_a_column
-    # if @player1
+    if @player1
       puts 'Pick a column (1 through 7)'
       @column = gets.chomp.to_i
-    # end
+    else
+      @column = rand(1..7)
+      puts "Computer picked #{@column}"
+    end
   end
 end
 
