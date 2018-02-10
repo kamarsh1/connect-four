@@ -17,7 +17,7 @@ class Game
   end
 
   def display_board
-
+    @game_board.each { |row| p row }
   end
 end
 
