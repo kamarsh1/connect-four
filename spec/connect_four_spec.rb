@@ -44,43 +44,6 @@ describe 'Game' do
         game.play
         expect(game).to have_received(:pick_a_column)
       end
-
-      describe '#pick_a_column' do
-        context 'when player1' do
-          # let(:player1) { true }
-          # let(:column) { 3 }
-
-          before do
-            game.player1 = true
-            game.pick_a_column
-          end
-
-          it 'asks player to pick a column' do
-            expect { game.pick_a_column }.to output("Pick a column (1 through 7)\n").to_stdout
-          end
-
-          it 'gets a number from input' do
-            expect(game.column).to eq(3)
-          end
-        end
-
-        # describe 'when player1' do
-        #   let(:player1) { true }
-        #
-        #   before do
-        #     allow(game).to receive(:pick_a_column) { 3 }
-        #   end
-        #
-        #   it 'asks player to pick a column' do
-        #     game.play
-        #     expect(game).to have_received(:pick_a_column)
-        #   end
-        #
-        #   it 'gets a number from input' do
-        #     expect(game.pick_a_column).to eq(3)
-        #   end
-        # end
-      end
     end
   end
 
@@ -90,5 +53,40 @@ describe 'Game' do
     it 'prints out the game board' do
       expect { game.display_board }.to output(board).to_stdout
     end
+  end
+
+  describe '#pick_a_column' do
+    # context 'when player1' do
+
+    before do
+      allow(game).to receive(:gets).and_return('3')
+      game.pick_a_column
+    end
+
+    it 'asks player to pick a column' do
+      expect { game.pick_a_column }.to output("Pick a column (1 through 7)\n").to_stdout
+    end
+
+    it 'gets a number from input' do
+      expect(game.column).to eq(3)
+    end
+    # end
+
+    # describe 'when player1' do
+    #   let(:player1) { true }
+    #
+    #   before do
+    #     allow(game).to receive(:pick_a_column) { 3 }
+    #   end
+    #
+    #   it 'asks player to pick a column' do
+    #     game.play
+    #     expect(game).to have_received(:pick_a_column)
+    #   end
+    #
+    #   it 'gets a number from input' do
+    #     expect(game.pick_a_column).to eq(3)
+    #   end
+    # end
   end
 end
