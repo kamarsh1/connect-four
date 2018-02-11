@@ -42,7 +42,7 @@ describe 'Game' do
 
       describe 'when it IS a valid move' do
         before do
-          allow(game).to receive(:pick_a_column).and_return(7)
+          allow(game).to receive(:valid_move?).and_return(true)
           allow(game).to receive(:place_chip_in_column)
           game.play
         end
@@ -53,7 +53,7 @@ describe 'Game' do
 
       describe 'when it is NOT a valid move' do
         before do
-          allow(game).to receive(:pick_a_column).and_return(0)
+          allow(game).to receive(:valid_move?).and_return(false)
           allow(game).to receive(:invalid_selection)
           game.play
         end
@@ -97,7 +97,7 @@ describe 'Game' do
         expect(game.pick_a_column).to be_between(1, 7)
       end
 
-      # it 'prints a message' do       # figure this out
+      # it 'prints a message' do       #### figure this out!!!
       #   expect { game.pick_a_column }.to output("Computer picked").to_stdout
       # end
     end
@@ -117,6 +117,8 @@ describe 'Game' do
         expect(game.valid_move?(column)).to eq(false)
       end
     end
+
+    #### Need to set up a context where the column is valid but the column is full
   end
 
   describe '#invalid_selection' do
