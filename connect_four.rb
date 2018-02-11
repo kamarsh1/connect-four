@@ -17,7 +17,7 @@ class Game
       display_board
 
       column = pick_a_column
-      valid_move?(column) ? place_chip_in_column : invalid_selection
+      valid_move?(column) ? place_chip_in_column(column) : invalid_selection
 
       # take this out once game_over gets set in the right place
       @game_over = true
@@ -43,8 +43,13 @@ class Game
     column.between?(1,7) && @game_board[0][column-1] == '...'
   end
 
-  def place_chip_in_column
-    puts 'Place chip in column'
+  def place_chip_in_column(column)
+    5.downto(0).each do |row|
+      if @game_board[row][column-1] == '...'
+        @player1 ? @game_board[row][column-1] = 'RED' : @game_board[row][column-1] = 'BLK'
+        break
+      end
+    end
   end
 
   def invalid_selection

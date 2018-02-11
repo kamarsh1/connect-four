@@ -104,21 +104,92 @@ describe 'Game' do
   end
 
   describe '#valid_move?' do
-    context 'when valid move' do
+    context 'column chosen is a valid column' do
       let(:column) { 4 }
-      it 'returns true when IS a valid move' do
-        expect(game.valid_move?(column)).to eq(true)
+
+      context 'and the column is NOT full' do
+        before do
+          game.game_board[5][column-1] = 'BLK'
+          game.game_board[4][column-1] = 'BLK'
+          game.game_board[3][column-1] = 'BLK'
+        end
+
+        it 'move IS valid' do
+          expect(game.valid_move?(column)).to eq(true)
+        end
       end
     end
 
-    context 'when NOT valid move' do
+    context 'column chosen IS a valid column' do
+      let(:column) { 7 }
+
+      context 'but the column is full' do
+        before do
+          game.game_board[5][column-1] = 'BLK'
+          game.game_board[4][column-1] = 'BLK'
+          game.game_board[3][column-1] = 'BLK'
+          game.game_board[2][column-1] = 'RED'
+          game.game_board[1][column-1] = 'RED'
+          game.game_board[0][column-1] = 'RED'
+        end
+
+        it 'move is NOT valid' do
+          expect(game.valid_move?(column)).to eq(false)
+        end
+      end
+    end
+
+    context 'when column chosen is NOT valid' do
       let(:column) { 12 }
       it 'returns false when NOT a valid move' do
         expect(game.valid_move?(column)).to eq(false)
       end
     end
+  end
 
-    #### Need to set up a context where the column is valid but the column is full
+  describe '#place_chip_in_column' do
+    let(:column) { 1 }
+
+    context 'when player1' do
+      before do
+        game.player1 = true
+        game.game_board[5][column-1] = '...'
+      end
+
+      it 'places a RED chip in bottom-most empty row for chosen column' do
+        game.place_chip_in_column(column)
+        expect(game.game_board[5][column-1]).to eq('RED')
+      end
+    end
+
+    context 'when NOT player1' do
+      before do
+        game.player1 = false
+        game.game_board[5][column-1] = '...'
+      end
+
+      it 'places a BLK chip in bottom-most empty row for chosen column' do
+        game.place_chip_in_column(column)
+        expect(game.game_board[5][column-1]).to eq('BLK')
+      end
+    end
+
+    context 'when lower rows for the chosen column are full' do
+      before do
+        game.player1 = true
+        game.game_board[5][column-1] = 'BLK'
+        game.game_board[4][column-1] = 'BLK'
+        game.game_board[3][column-1] = 'BLK'
+      end
+
+      it 'puts chip in next available row for the chosen column' do
+        game.place_chip_in_column(column)
+        expect(game.game_board[5][column-1]).not_to eq('RED')
+        expect(game.game_board[4][column-1]).not_to eq('RED')
+        expect(game.game_board[3][column-1]).not_to eq('RED')
+        expect(game.game_board[2][column-1]).to eq('RED')
+      end
+    end
   end
 
   describe '#invalid_selection' do
