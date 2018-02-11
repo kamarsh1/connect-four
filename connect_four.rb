@@ -5,20 +5,19 @@ class Game
     @game_board = Array.new(6){Array.new(7, '...')}
     @game_over = false
     @player1 = false
-    @column = column
-    @valid_move = false
+    # @column = column
   end
 
   def play
+    # @player1 = false
+
     until @game_over
       @player1 = !@player1
-      @valid_move = false
+
       display_board
 
-      pick_a_column
-      validate_move
-        # place_chip_in_column
-      @valid_move ? place_chip_in_column : invalid_selection
+      column = pick_a_column
+      valid_move?(column) ? place_chip_in_column : invalid_selection
 
       # take this out once game_over gets set in the right place
       @game_over = true
@@ -32,19 +31,20 @@ class Game
   def pick_a_column
     if @player1
       puts 'Pick a column (1 through 7)'
-      @column = gets.chomp.to_i
+      gets.chomp.to_i
     else
-      @column = rand(1..7)
-      puts "Computer picked #{@column}"
+      column = rand(1..7)
+      puts "Computer picked #{column}"
+      column
     end
   end
 
-  def valid_move?
-    @valid_move = @column.between?(1,7) && @game_board[0][@column-1] == '...'
+  def valid_move?(column)
+    column.between?(1,7) && @game_board[0][column-1] == '...'
   end
 
   def place_chip_in_column
-
+    puts 'Place chip in column'
   end
 
   def invalid_selection
