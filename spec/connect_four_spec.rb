@@ -25,6 +25,7 @@ describe 'Game' do
         allow(game).to receive(:valid_move?).and_return(true)
         allow(game).to receive(:place_chip_in_column)
         allow(game).to receive(:invalid_selection)
+        allow(game).to receive(:win_or_tie?)
         game.play
       end
 
@@ -49,12 +50,43 @@ describe 'Game' do
       it 'does NOT call invalid_selection' do
         expect(game).not_to have_received(:invalid_selection)
       end
+
+      it 'checks if win or tie' do
+        expect(game).to have_received(:win_or_tie?)
+      end
+
+      context 'when it IS a win or tie' do
+        before do
+          allow(game).to receive(:win_or_tie?).and_return(true)
+        end
+
+        it 'ends the game' do   ### this is kind of hokey - figure out what to expect
+          expect(game).to have_received(:win_or_tie?)
+        end
+      end
+
+      context 'when it is NOT a win or a tie' do
+        context 'it keeps playing until there IS a win or a tie' do
+          before do
+            allow(game).to receive(:display_board)
+            allow(game).to receive(:pick_a_column)
+            allow(game).to receive(:valid_move?)
+            allow(game).to receive(:place_chip_in_column)
+            allow(game).to receive(:win_or_tie?).and_return(false)
+
+            game.play
+          end
+
+          it 'does it all over again' do
+            
+          end
+        end
+      end
     end
 
     context 'when it is NOT a valid move' do
       context 'it loops until there IS a valid move' do
         before do
-          allow(game).to receive(:valid_move)
           allow(game).to receive(:display_board)
           allow(game).to receive(:pick_a_column).and_return(0, 9, 4)
           allow(game).to receive(:valid_move?).and_return(false, false, true)
@@ -160,7 +192,7 @@ describe 'Game' do
 
     context 'when column chosen is NOT valid' do
       let(:column) { 12 }
-      
+
       it 'the move is NOT valid' do
         expect(game.valid_move?(column)).to eq(false)
       end
@@ -215,6 +247,14 @@ describe 'Game' do
   describe '#invalid_selection' do
     it 'prints a message' do
       expect { game.invalid_selection }.to output("Invalid Selection\n").to_stdout
+    end
+  end
+
+  describe '#win_or_tie?' do
+    context 'when its a win' do
+      it 'returns true' do
+        expect(game.win_or_tie?).to eq(true)
+      end
     end
   end
 end
