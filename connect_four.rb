@@ -1,23 +1,23 @@
 class Game
-  attr_accessor :game_board, :game_over, :player1, :valid_move, :column
+  attr_accessor :game_board, :game_over, :player1
 
   def initialize
     @game_board = Array.new(6){Array.new(7, '...')}
     @game_over = false
     @player1 = false
-    # @column = column
   end
 
   def play
-    # @player1 = false
-
     until @game_over
       @player1 = !@player1
-
       display_board
 
-      column = pick_a_column
-      valid_move?(column) ? place_chip_in_column(column) : invalid_selection
+      begin
+        column = pick_a_column
+        valid_move = valid_move?(column)
+        valid_move ? place_chip_in_column(column) : invalid_selection
+        display_board
+      end until valid_move
 
       # take this out once game_over gets set in the right place
       @game_over = true
@@ -25,7 +25,9 @@ class Game
   end
 
   def display_board
+    1.times { puts }
     @game_board.each { |row| p row }
+    1.times { puts }
   end
 
   def pick_a_column
