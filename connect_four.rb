@@ -8,20 +8,22 @@ class Game
   end
 
   def play
-    # begin
+    begin
       @player1 = !@player1
       display_board
-
-      begin
-        column = pick_a_column
-        valid_move = valid_move?(column)
-        valid_move ? place_chip_in_column(column) : invalid_selection
-        display_board
-      end until valid_move
-
+      make_a_move
       game_over = win_or_tie?
 
-    # end until game_over
+    end until game_over
+  end
+
+  def make_a_move
+    begin
+      column = pick_a_column
+      valid_move = valid_move?(column)
+      valid_move ? place_chip_in_column(column) : invalid_selection
+      display_board
+    end until valid_move
   end
 
   def display_board
@@ -59,7 +61,7 @@ class Game
   end
 
   def win_or_tie?
-    true
+    puts 'karen'
   end
 end
 
