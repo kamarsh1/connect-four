@@ -220,11 +220,41 @@ describe 'Game' do
     end
   end
 
-  # describe '#win_or_tie?' do
-  #   context 'when its a win' do
-  #     it 'returns true' do
-  #       expect(game.win_or_tie?).to eq(true)
-  #     end
-  #   end
-  # end
+  describe '#win_or_tie?' do
+    context 'when its a tie' do
+      before do
+        allow(game).to receive(:check_for_tie).and_return(true)
+        allow(game).to receive(:print_tie_message)
+        game.win_or_tie?
+      end
+
+      it 'checks for a tie' do
+        expect(game).to have_received(:check_for_tie)
+      end
+
+      it 'prints a message' do
+        expect(game).to have_received(:print_tie_message)
+      end
+
+      # it 'displays the board one final time' do
+      #   expect(@game).to have_received(:display_board)
+      # end
+
+      it 'returns true' do
+        expect(game.win_or_tie?).to eq(true)
+      end
+    end
+  end
+
+  describe '#check_for_tie' do
+    it 'returns true' do
+      expect(game.check_for_tie).to eq(true)
+    end
+  end
+
+  describe '#print_tie_message' do
+    it 'prints a message' do
+      expect { game.print_tie_message }.to output("\n*************************************************\n****************** It's a TIE! ******************\n*************************************************\n\n").to_stdout
+    end
+  end
 end
