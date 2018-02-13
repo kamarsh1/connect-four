@@ -240,6 +240,30 @@ describe 'Game' do
         expect(game.win_or_tie?).to eq(true)
       end
     end
+
+    ###
+    ### wrote this but never ran it!
+    ###
+    context 'when its a win' do
+      before do
+        allow(game).to receive(:check_for_win).and_return(true)
+        allow(game).to receive(:print_win_message)
+        game.win_or_tie?
+      end
+
+      it 'checks for a win' do
+        expect(game).to have_received(:check_for_win)
+      end
+
+      it 'prints a message' do
+        expect(game).to have_received(:print_win_message)
+      end
+
+      it 'returns true' do
+        expect(game.win_or_tie?).to eq(true)
+      end
+    end
+
   end
 
   describe '#check_for_tie' do

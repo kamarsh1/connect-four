@@ -63,8 +63,10 @@ class Game
     tie = check_for_tie
     if tie
       print_tie_message
+      return tie
     end
-    tie
+
+
   end
 
   def check_for_tie
