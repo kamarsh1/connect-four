@@ -236,10 +236,6 @@ describe 'Game' do
         expect(game).to have_received(:print_tie_message)
       end
 
-      # it 'displays the board one final time' do
-      #   expect(@game).to have_received(:display_board)
-      # end
-
       it 'returns true' do
         expect(game.win_or_tie?).to eq(true)
       end
@@ -247,8 +243,25 @@ describe 'Game' do
   end
 
   describe '#check_for_tie' do
-    it 'returns true' do
-      expect(game.check_for_tie).to eq(true)
+    context 'when there is a tie' do
+      before do
+        game.game_board = Array.new(6){Array.new(7, 'NOT')}
+      end
+
+      it 'returns true' do
+        game.check_for_tie
+        expect(game.check_for_tie).to eq(true)
+      end
+    end
+
+    context 'when there is NOT a tie' do
+      before do
+        game.game_board = Array.new(6){Array.new(7, '...')}
+      end
+
+      it 'returns false' do
+        expect(game.check_for_tie).to eq(false)
+      end
     end
   end
 

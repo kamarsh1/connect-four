@@ -68,6 +68,11 @@ class Game
   end
 
   def check_for_tie
+    (0..6).each do |i|
+      if @game_board[0][i] == '...'
+        return false
+      end
+    end
     true
   end
 
