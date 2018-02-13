@@ -13,7 +13,6 @@ class Game
       display_board
       make_a_move
       game_over = win_or_tie?
-
     end until game_over
   end
 
