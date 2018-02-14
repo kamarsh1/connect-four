@@ -221,26 +221,9 @@ describe 'Game' do
   end
 
   describe '#win_or_tie?' do
-    context 'when its a tie' do
-      before do
-        allow(game).to receive(:check_for_tie).and_return(true)
-        allow(game).to receive(:print_tie_message)
-        game.win_or_tie?
-      end
-
-      it 'checks for a tie' do
-        expect(game).to have_received(:check_for_tie)
-      end
-
-      it 'prints a message' do
-        expect(game).to have_received(:print_tie_message)
-      end
-
-      it 'returns true' do
-        expect(game.win_or_tie?).to eq(true)
-      end
-    end
-
+    ##
+    ## what if it's NOT a win?  SAme for tie
+    ##
     context 'when its a win' do
       before do
         allow(game).to receive(:check_for_win).and_return(true)
@@ -261,6 +244,25 @@ describe 'Game' do
       end
     end
 
+    context 'when its a tie' do
+      before do
+        allow(game).to receive(:check_for_tie).and_return(true)
+        allow(game).to receive(:print_tie_message)
+        game.win_or_tie?
+      end
+
+      it 'checks for a tie' do
+        expect(game).to have_received(:check_for_tie)
+      end
+
+      it 'prints a message' do
+        expect(game).to have_received(:print_tie_message)
+      end
+
+      it 'returns true' do
+        expect(game.win_or_tie?).to eq(true)
+      end
+    end
   end
 
   describe '#check_for_tie' do
@@ -289,6 +291,27 @@ describe 'Game' do
   describe '#print_tie_message' do
     it 'prints a message' do
       expect { game.print_tie_message }.to output("\n*************************************************\n****************** It's a TIE! ******************\n*************************************************\n\n").to_stdout
+    end
+  end
+
+  describe '#check_for_win' do
+    before do
+      allow(game).to receive(:check_horizontal)
+      allow(game).to receive(:check_vertical)
+      allow(game).to receive(:check_diagonal)
+      game.check_for_win
+    end
+
+    it 'checks for horizontal win' do
+      expect(game).to have_received(:check_horizontal)
+    end
+
+    it 'checks for vertical win' do
+      expect(game).to have_received(:check_vertical)
+    end
+
+    it 'checks for diagonal win' do
+      expect(game).to have_received(:check_diagonal)
     end
   end
 

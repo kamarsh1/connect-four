@@ -60,17 +60,30 @@ class Game
   end
 
   def win_or_tie?
-    tie = check_for_tie
-    if tie
-      print_tie_message
-      return tie
-    end
-
     win = check_for_win
     if win
       print_win_message
       win
     end
+
+    tie = check_for_tie
+    if tie
+      print_tie_message
+      return tie
+    end
+  end
+
+  def check_for_win
+true
+  end
+
+  def print_win_message
+    @player1 ? player = 'RED' : player = 'BLK'
+    1.times { puts }
+    puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    puts "!!!!!!!!!!!!!!!!!!! #{player} WINS !!!!!!!!!!!!!!!!!!!!"
+    puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    1.times { puts }
   end
 
   def check_for_tie
@@ -87,19 +100,6 @@ class Game
     puts '*************************************************'
     puts "****************** It's a TIE! ******************"
     puts '*************************************************'
-    1.times { puts }
-  end
-
-  def check_for_win
-
-  end
-
-  def print_win_message
-    @player1 ? player = 'RED' : player = 'BLK'
-    1.times { puts }
-    puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    puts "!!!!!!!!!!!!!!!!!!! #{player} WINS !!!!!!!!!!!!!!!!!!!!"
-    puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     1.times { puts }
   end
 end
