@@ -221,9 +221,6 @@ describe 'Game' do
   end
 
   describe '#win_or_tie?' do
-    ##
-    ## what if it's NOT a win?  SAme for tie
-    ##
     context 'when its a win' do
       before do
         allow(game).to receive(:check_for_win).and_return(true)
@@ -246,6 +243,7 @@ describe 'Game' do
 
     context 'when its a tie' do
       before do
+        allow(game).to receive(:check_for_win).and_return(false)
         allow(game).to receive(:check_for_tie).and_return(true)
         allow(game).to receive(:print_tie_message)
         game.win_or_tie?
@@ -261,6 +259,36 @@ describe 'Game' do
 
       it 'returns true' do
         expect(game.win_or_tie?).to eq(true)
+      end
+    end
+
+    context 'when neither a win nor a tie' do
+      before do
+        allow(game).to receive(:check_for_win).and_return(false)
+        allow(game).to receive(:check_for_tie).and_return(false)
+        allow(game).to receive(:print_win_message)
+        allow(game).to receive(:print_tie_message)
+        game.win_or_tie?
+      end
+
+      it 'checks for a win' do
+        expect(game).to have_received(:check_for_win)
+      end
+
+      it 'checks for a tie' do
+        expect(game).to have_received(:check_for_tie)
+      end
+
+      it 'does NOT print a win message' do
+        expect(game).not_to have_received(:print_win_message)
+      end
+
+      it 'does NOT print a tie message' do
+        expect(game).not_to have_received(:print_tie_message)
+      end
+
+      it 'returns false' do
+        expect(game.win_or_tie?).to eq(false)
       end
     end
   end
@@ -295,23 +323,104 @@ describe 'Game' do
   end
 
   describe '#check_for_win' do
-    before do
-      allow(game).to receive(:check_horizontal)
-      allow(game).to receive(:check_vertical)
-      allow(game).to receive(:check_diagonal)
-      game.check_for_win
+    describe 'when horizontal win' do
+      before do
+        allow(game).to receive(:horizontal_win?).and_return(true)
+        allow(game).to receive(:vertical_win?)
+        allow(game).to receive(:diagonal_win?)
+        game.check_for_win
+      end
+
+      it 'checks for horizontal win' do
+        expect(game).to have_received(:horizontal_win?)
+      end
+
+      it 'does not check for vertical win' do
+        expect(game).not_to have_received(:vertical_win?)
+      end
+
+      it 'does not check for diagonal win' do
+        expect(game).not_to have_received(:diagonal_win?)
+      end
+
+      it 'returns true' do
+        expect(game.check_for_win).to eq(true)
+      end
     end
 
-    it 'checks for horizontal win' do
-      expect(game).to have_received(:check_horizontal)
+    describe 'when vertical win' do
+      before do
+        allow(game).to receive(:horizontal_win?).and_return(false)
+        allow(game).to receive(:vertical_win?).and_return(true)
+        allow(game).to receive(:diagonal_win?)
+        game.check_for_win
+      end
+
+      it 'checks for horizontal win' do
+        expect(game).to have_received(:horizontal_win?)
+      end
+
+      it 'checks for vertical win' do
+        expect(game).to have_received(:vertical_win?)
+      end
+
+      it 'does not check for diagonal win' do
+        expect(game).not_to have_received(:diagonal_win?)
+      end
+
+      it 'returns true' do
+        expect(game.check_for_win).to eq(true)
+      end
     end
 
-    it 'checks for vertical win' do
-      expect(game).to have_received(:check_vertical)
+    describe 'when diagonal win' do
+      before do
+        allow(game).to receive(:horizontal_win?).and_return(false)
+        allow(game).to receive(:vertical_win?).and_return(false)
+        allow(game).to receive(:diagonal_win?).and_return(true)
+        game.check_for_win
+      end
+
+      it 'checks for horizontal win' do
+        expect(game).to have_received(:horizontal_win?)
+      end
+
+      it 'checks for vertical win' do
+        expect(game).to have_received(:vertical_win?)
+      end
+
+      it 'checks for diagonal win' do
+        expect(game).to have_received(:diagonal_win?)
+      end
+
+      it 'returns true' do
+        expect(game.check_for_win).to eq(true)
+      end
     end
 
-    it 'checks for diagonal win' do
-      expect(game).to have_received(:check_diagonal)
+    describe 'when NO win' do
+      before do
+        allow(game).to receive(:horizontal_win?).and_return(false)
+        allow(game).to receive(:vertical_win?).and_return(false)
+        allow(game).to receive(:diagonal_win?).and_return(false)
+        game.check_for_win
+      end
+
+      it 'checks for horizontal win' do
+        expect(game).to have_received(:horizontal_win?)
+      end
+
+      it 'checks for vertical win' do
+        expect(game).to have_received(:vertical_win?)
+      end
+
+      it 'checks for diagonal win' do
+        expect(game).to have_received(:diagonal_win?)
+      end
+
+      it 'returns false' do
+        expect(game.check_for_win).to eq(false)
+      end
     end
   end
 

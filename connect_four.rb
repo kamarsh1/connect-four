@@ -63,7 +63,7 @@ class Game
     win = check_for_win
     if win
       print_win_message
-      win
+      return win
     end
 
     tie = check_for_tie
@@ -71,10 +71,34 @@ class Game
       print_tie_message
       return tie
     end
+    false
   end
 
   def check_for_win
-true
+    if horizontal_win?
+      return true
+    end
+
+    if vertical_win?
+      return true
+    end
+
+    if diagonal_win?
+      return true
+    end
+    false
+  end
+
+  def horizontal_win?
+    false
+  end
+
+  def vertical_win?
+    false
+  end
+
+  def diagonal_win?
+    true
   end
 
   def print_win_message
