@@ -241,9 +241,6 @@ describe 'Game' do
       end
     end
 
-    ###
-    ### wrote this but never ran it!
-    ###
     context 'when its a win' do
       before do
         allow(game).to receive(:check_for_win).and_return(true)
@@ -292,6 +289,18 @@ describe 'Game' do
   describe '#print_tie_message' do
     it 'prints a message' do
       expect { game.print_tie_message }.to output("\n*************************************************\n****************** It's a TIE! ******************\n*************************************************\n\n").to_stdout
+    end
+  end
+
+  describe '#print_win_message' do
+    context 'when player1 wins' do
+      before do
+        game.player1 = true
+      end
+
+      it 'prints RED wins message' do
+        expect { game.print_win_message }.to output("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! RED WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n").to_stdout
+      end
     end
   end
 end
