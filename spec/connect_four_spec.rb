@@ -302,5 +302,15 @@ describe 'Game' do
         expect { game.print_win_message }.to output("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! RED WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n").to_stdout
       end
     end
+
+    context 'when player2 wins' do
+      before do
+        game.player1 = false
+      end
+
+      it 'prints BLK wins message' do
+        expect { game.print_win_message }.to output("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! BLK WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n").to_stdout
+      end
+    end
   end
 end
