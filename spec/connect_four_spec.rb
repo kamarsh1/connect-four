@@ -450,9 +450,6 @@ describe 'Game' do
     describe 'when the first column on the bottom row IS empty' do
       before do
         game.game_board[5][0] = '...'
-        game.game_board[5][1] = 'BLK'
-        game.game_board[5][2] = 'BLK'
-        game.game_board[5][3] = 'BLK'
       end
 
       it 'we do not have a winner' do
@@ -597,9 +594,6 @@ describe 'Game' do
     describe 'when the first column on the bottom row IS empty' do
       before do
         game.game_board[5][0] = '...'
-        game.game_board[5][1] = 'BLK'
-        game.game_board[5][2] = 'BLK'
-        game.game_board[5][3] = 'BLK'
       end
 
       it 'we do not have a winner' do
@@ -742,6 +736,61 @@ describe 'Game' do
   end
 
   describe '#diagonal_win?' do
+    describe 'when the first column in the bottom row is empty' do
+      before do
+        game.game_board[5][0] = '...'
+      end
+
+      it 'we do not have a winner' do
+        expect(game.diagonal_win?).to eq(false)
+      end
+    end
+
+    describe 'when the first column on the bottom row is NOT empty' do
+      describe 'and it matches the next 3 items on the diagonal going up' do
+        before do
+          game.game_board[5][0] = 'BLK'
+          game.game_board[4][1] = 'BLK'
+          game.game_board[3][2] = 'BLK'
+          game.game_board[2][3] = 'BLK'
+        end
+
+        it 'we have a winner!' do
+          expect(game.diagonal_win?).to eq(true)
+        end
+      end
+    end
+
+    describe 'when the first column on the bottom row is NOT empty' do
+      describe 'and it does NOT match any of the next 3 items on the diagonal going up' do
+        before do
+          game.game_board[5][0] = 'BLK'
+          game.game_board[4][1] = 'BLK'
+          game.game_board[3][2] = 'RED'
+          game.game_board[2][3] = 'BLK'
+        end
+
+        it 'we do not have a winner' do
+          expect(game.diagonal_win?).to eq(false)
+        end
+      end
+    end
+
+    describe 'when the fourth column in the third row is NOT empty' do
+      describe 'and it matches the next 3 items on the diagonal going up' do
+        before do
+          ## fixing these cols & rows
+          game.game_board[4][3] = 'BLK'
+          game.game_board[3][4] = 'BLK'
+          game.game_board[2][5] = 'BLK'
+          game.game_board[1][6] = 'BLK'
+        end
+
+        it 'we have a winner!' do
+          expect(game.horizontal_win?).to eq(true)
+        end
+      end
+    end
 
   end
 end

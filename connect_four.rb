@@ -114,13 +114,20 @@ class Game
         end
       end
     end
-
-
     false
   end
 
   def diagonal_win?
-    true
+    col = 0
+    5.downto(3).each do |row|
+      if @game_board[row][0] != '...' &&
+          @game_board[row][0] == @game_board[row-1][col+1] &&
+          @game_board[row][0] == @game_board[row-2][col+2] &&
+          @game_board[row][0] == @game_board[row-3][col+3]
+        return true
+      end
+    end
+    false
   end
 
   def print_win_message
