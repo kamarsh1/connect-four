@@ -91,14 +91,15 @@ class Game
 
   def horizontal_win?
     row = 5
-    column = 0
-    if @game_board[row][column] != '...' &&
-        @game_board[row][column] == @game_board[row][column+1] &&
-        @game_board[row][column] == @game_board[row][column+2] &&
-        @game_board[row][column] == @game_board[row][column+3]
-      return true
-
+    (0..3).each do |column|
+      if @game_board[row][column] != '...' &&
+          @game_board[row][column] == @game_board[row][column+1] &&
+          @game_board[row][column] == @game_board[row][column+2] &&
+          @game_board[row][column] == @game_board[row][column+3]
+        return true
+      end
     end
+    false
   end
 
   def vertical_win?

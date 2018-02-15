@@ -457,9 +457,8 @@ describe 'Game' do
         game.game_board[row][column+3] = 'BLK'
       end
 
-      it 'moves on to the next column' do
-        ## somehow need to expect that the first column that's being
-        ## checked has increased by 1 (but it can't be > 3!)
+      it 'we do not have a winner' do
+        expect(game.horizontal_win?).not_to eq(true)
       end
     end
 
@@ -492,6 +491,35 @@ describe 'Game' do
         it 'we do not have a winner' do
           expect(game.horizontal_win?).not_to eq(true)
         end
+      end
+    end
+
+    describe 'when the third column on the bottom row is NOT empty' do
+      describe 'and it matches the next 3 columns' do
+        before do
+          row = 5
+          column = 3
+          game.game_board[row][column] = 'BLK'
+          game.game_board[row][column+1] = 'BLK'
+          game.game_board[row][column+2] = 'BLK'
+          game.game_board[row][column+3] = 'BLK'
+        end
+
+        it 'we have a winner!' do
+          expect(game.horizontal_win?).to eq(true)
+        end
+      end
+    end
+
+    describe 'when the fourth column on the bottom row is NOT empty' do
+      before do
+        row = 5
+        column = 4
+        game.game_board[row][column] = 'BLK'
+      end
+
+      it 'returns false' do
+        expect(game.horizontal_win?).to eq(false)
       end
     end
 
