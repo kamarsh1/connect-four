@@ -104,6 +104,18 @@ class Game
   end
 
   def vertical_win?
+    (0..6).each do |column|
+      5.downto(3).each do |row|
+        if @game_board[row][column] != '...' &&
+            @game_board[row][column] == @game_board[row-1][column] &&
+            @game_board[row][column] == @game_board[row-2][column] &&
+            @game_board[row][column] == @game_board[row-3][column]
+          return true
+        end
+      end
+    end
+
+
     false
   end
 
