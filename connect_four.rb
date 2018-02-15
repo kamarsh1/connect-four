@@ -118,13 +118,14 @@ class Game
   end
 
   def diagonal_win?
-    col = 0
-    5.downto(3).each do |row|
-      if @game_board[row][0] != '...' &&
-          @game_board[row][0] == @game_board[row-1][col+1] &&
-          @game_board[row][0] == @game_board[row-2][col+2] &&
-          @game_board[row][0] == @game_board[row-3][col+3]
-        return true
+    (0..3).each do |col|
+      5.downto(3).each do |row|
+        if @game_board[row][col] != '...' &&
+            @game_board[row][col] == @game_board[row-1][col+1] &&
+            @game_board[row][col] == @game_board[row-2][col+2] &&
+            @game_board[row][col] == @game_board[row-3][col+3]
+          return true
+        end
       end
     end
     false

@@ -776,18 +776,18 @@ describe 'Game' do
       end
     end
 
-    describe 'when the fourth column in the third row is NOT empty' do
+    describe 'when the fourth row in the fourth column is NOT empty' do
       describe 'and it matches the next 3 items on the diagonal going up' do
         before do
           ## fixing these cols & rows
-          game.game_board[4][3] = 'BLK'
-          game.game_board[3][4] = 'BLK'
-          game.game_board[2][5] = 'BLK'
-          game.game_board[1][6] = 'BLK'
+          game.game_board[3][3] = 'BLK'
+          game.game_board[2][4] = 'BLK'
+          game.game_board[1][5] = 'BLK'
+          game.game_board[0][6] = 'BLK'
         end
 
         it 'we have a winner!' do
-          expect(game.horizontal_win?).to eq(true)
+          expect(game.diagonal_win?).to eq(true)
         end
       end
     end
