@@ -90,7 +90,15 @@ class Game
   end
 
   def horizontal_win?
-    false
+    row = 5
+    column = 0
+    if @game_board[row][column] != '...' &&
+        @game_board[row][column] == @game_board[row][column+1] &&
+        @game_board[row][column] == @game_board[row][column+2] &&
+        @game_board[row][column] == @game_board[row][column+3]
+      return true
+
+    end
   end
 
   def vertical_win?

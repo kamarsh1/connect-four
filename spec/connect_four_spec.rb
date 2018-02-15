@@ -445,4 +445,66 @@ describe 'Game' do
       end
     end
   end
+
+  describe '#horizontal_win?' do
+    describe 'when the first column on the bottom row IS empty' do
+      before do
+        row = 5
+        column = 0
+        game.game_board[row][column] = '...'
+        game.game_board[row][column+1] = 'BLK'
+        game.game_board[row][column+2] = 'BLK'
+        game.game_board[row][column+3] = 'BLK'
+      end
+
+      it 'moves on to the next column' do
+        ## somehow need to expect that the first column that's being
+        ## checked has increased by 1 (but it can't be > 3!)
+      end
+    end
+
+    describe 'when the first column on the bottom row is NOT empty' do
+      describe 'and it matches the next 3 columns' do
+        before do
+          row = 5
+          game.game_board[row][0] = 'BLK'
+          game.game_board[row][1] = 'BLK'
+          game.game_board[row][2] = 'BLK'
+          game.game_board[row][3] = 'BLK'
+        end
+
+        it 'we have a winner!' do
+          expect(game.horizontal_win?).to eq(true)
+        end
+      end
+    end
+
+    describe 'when the first column on the bottom row is NOT empty' do
+      describe 'and it does NOT match any of the next 3 columns' do
+        before do
+          row = 5
+          game.game_board[row][0] = 'BLK'
+          game.game_board[row][1] = 'BLK'
+          game.game_board[row][2] = 'RED'
+          game.game_board[row][3] = 'BLK'
+        end
+
+        it 'we do not have a winner' do
+          expect(game.horizontal_win?).not_to eq(true)
+        end
+      end
+    end
+
+    describe 'when the current column is 3 we need to move up a row' do
+
+    end
+  end
+
+  describe '#vertical_win?' do
+
+  end
+
+  describe '#diagonal_win?' do
+
+  end
 end
