@@ -683,61 +683,60 @@ describe 'Game' do
       end
     end
 
-    ## working on this - need to check this, but make sure I am checking
-    ## all the columns since there are 7
-
     describe 'when there are no winners in any columns' do
       before do
         game.game_board[5][0] = 'BLK'
-        game.game_board[5][1] = 'BLK'
-        game.game_board[5][2] = 'BLK'
-        game.game_board[5][3] = 'RED'
-        game.game_board[5][4] = 'BLK'
-        game.game_board[5][5] = 'BLK'
-        game.game_board[5][6] = 'BLK'
-
         game.game_board[4][0] = 'BLK'
-        game.game_board[4][1] = 'BLK'
-        game.game_board[4][2] = 'BLK'
-        game.game_board[4][3] = 'RED'
-        game.game_board[4][4] = 'BLK'
-        game.game_board[4][5] = 'BLK'
-        game.game_board[4][6] = 'BLK'
-
         game.game_board[3][0] = 'BLK'
-        game.game_board[3][1] = 'BLK'
-        game.game_board[3][2] = 'BLK'
-        game.game_board[3][3] = 'RED'
-        game.game_board[3][4] = 'BLK'
-        game.game_board[3][5] = 'BLK'
-        game.game_board[3][6] = 'BLK'
-
-        game.game_board[2][0] = 'BLK'
-        game.game_board[2][1] = 'BLK'
-        game.game_board[2][2] = 'BLK'
-        game.game_board[2][3] = 'RED'
-        game.game_board[2][4] = 'BLK'
-        game.game_board[2][5] = 'BLK'
-        game.game_board[2][6] = 'BLK'
-
+        game.game_board[2][0] = 'RED'
         game.game_board[1][0] = 'BLK'
-        game.game_board[1][1] = 'BLK'
-        game.game_board[1][2] = 'BLK'
-        game.game_board[1][3] = 'RED'
-        game.game_board[1][4] = 'BLK'
-        game.game_board[1][5] = 'BLK'
-        game.game_board[1][6] = 'BLK'
-
         game.game_board[0][0] = 'BLK'
+
+        game.game_board[5][1] = 'BLK'
+        game.game_board[4][1] = 'BLK'
+        game.game_board[3][1] = 'BLK'
+        game.game_board[2][1] = 'RED'
+        game.game_board[1][1] = 'BLK'
         game.game_board[0][1] = 'BLK'
+
+        game.game_board[5][2] = 'BLK'
+        game.game_board[4][2] = 'BLK'
+        game.game_board[3][2] = 'BLK'
+        game.game_board[2][2] = 'RED'
+        game.game_board[1][2] = 'BLK'
         game.game_board[0][2] = 'BLK'
-        game.game_board[0][3] = 'RED'
+
+        game.game_board[5][3] = 'BLK'
+        game.game_board[4][3] = 'BLK'
+        game.game_board[3][3] = 'BLK'
+        game.game_board[2][3] = 'RED'
+        game.game_board[1][3] = 'BLK'
+        game.game_board[0][3] = 'BLK'
+
+        game.game_board[5][4] = 'BLK'
+        game.game_board[4][4] = 'BLK'
+        game.game_board[3][4] = 'BLK'
+        game.game_board[2][4] = 'RED'
+        game.game_board[1][4] = 'BLK'
         game.game_board[0][4] = 'BLK'
+
+        game.game_board[5][5] = 'BLK'
+        game.game_board[4][5] = 'BLK'
+        game.game_board[3][5] = 'BLK'
+        game.game_board[2][5] = 'RED'
+        game.game_board[1][5] = 'BLK'
         game.game_board[0][5] = 'BLK'
+
+        game.game_board[5][6] = 'BLK'
+        game.game_board[4][6] = 'BLK'
+        game.game_board[3][6] = 'BLK'
+        game.game_board[2][6] = 'RED'
+        game.game_board[1][6] = 'BLK'
         game.game_board[0][6] = 'BLK'
       end
+
       it 'returns false' do
-        expect(game.horizontal_win?).to eq(false)
+        expect(game.vertical_win?).to eq(false)
       end
     end
   end
