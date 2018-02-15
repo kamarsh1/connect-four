@@ -449,12 +449,10 @@ describe 'Game' do
   describe '#horizontal_win?' do
     describe 'when the first column on the bottom row IS empty' do
       before do
-        row = 5
-        column = 0
-        game.game_board[row][column] = '...'
-        game.game_board[row][column+1] = 'BLK'
-        game.game_board[row][column+2] = 'BLK'
-        game.game_board[row][column+3] = 'BLK'
+        game.game_board[5][0] = '...'
+        game.game_board[5][1] = 'BLK'
+        game.game_board[5][2] = 'BLK'
+        game.game_board[5][3] = 'BLK'
       end
 
       it 'we do not have a winner' do
@@ -465,11 +463,10 @@ describe 'Game' do
     describe 'when the first column on the bottom row is NOT empty' do
       describe 'and it matches the next 3 columns' do
         before do
-          row = 5
-          game.game_board[row][0] = 'BLK'
-          game.game_board[row][1] = 'BLK'
-          game.game_board[row][2] = 'BLK'
-          game.game_board[row][3] = 'BLK'
+          game.game_board[5][0] = 'BLK'
+          game.game_board[5][1] = 'BLK'
+          game.game_board[5][2] = 'BLK'
+          game.game_board[5][3] = 'BLK'
         end
 
         it 'we have a winner!' do
@@ -481,11 +478,10 @@ describe 'Game' do
     describe 'when the first column on the bottom row is NOT empty' do
       describe 'and it does NOT match any of the next 3 columns' do
         before do
-          row = 5
-          game.game_board[row][0] = 'BLK'
-          game.game_board[row][1] = 'BLK'
-          game.game_board[row][2] = 'RED'
-          game.game_board[row][3] = 'BLK'
+          game.game_board[5][0] = 'BLK'
+          game.game_board[5][1] = 'BLK'
+          game.game_board[5][2] = 'RED'
+          game.game_board[5][3] = 'BLK'
         end
 
         it 'we do not have a winner' do
@@ -497,12 +493,10 @@ describe 'Game' do
     describe 'when the third column on the bottom row is NOT empty' do
       describe 'and it matches the next 3 columns' do
         before do
-          row = 5
-          column = 3
-          game.game_board[row][column] = 'BLK'
-          game.game_board[row][column+1] = 'BLK'
-          game.game_board[row][column+2] = 'BLK'
-          game.game_board[row][column+3] = 'BLK'
+          game.game_board[5][3] = 'BLK'
+          game.game_board[5][4] = 'BLK'
+          game.game_board[5][5] = 'BLK'
+          game.game_board[5][6] = 'BLK'
         end
 
         it 'we have a winner!' do
@@ -513,9 +507,7 @@ describe 'Game' do
 
     describe 'when the fourth column on the bottom row is NOT empty' do
       before do
-        row = 5
-        column = 4
-        game.game_board[row][column] = 'BLK'
+        game.game_board[5][4] = 'BLK'
       end
 
       it 'returns false' do
@@ -523,8 +515,26 @@ describe 'Game' do
       end
     end
 
-    describe 'when the current column is 3 we need to move up a row' do
+    describe 'when there are no winners on the bottom row' do
+      describe 'and there is a winner on the next row up' do
+        before do
+          game.game_board[5][0] = 'BLK'
+          game.game_board[5][1] = 'BLK'
+          game.game_board[5][2] = 'BLK'
+          game.game_board[5][3] = 'RED'
+          game.game_board[5][4] = 'BLK'
+          game.game_board[5][5] = 'BLK'
+          game.game_board[5][6] = 'BLK'
 
+          game.game_board[4][2] = 'RED'
+          game.game_board[4][3] = 'BLK'
+          game.game_board[4][4] = 'BLK'
+          game.game_board[4][5] = 'BLK'
+        end
+        it 'returns true' do
+          expect(game.horizontal_win?).to eq(false)
+        end
+      end
     end
   end
 

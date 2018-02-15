@@ -90,13 +90,14 @@ class Game
   end
 
   def horizontal_win?
-    row = 5
-    (0..3).each do |column|
-      if @game_board[row][column] != '...' &&
-          @game_board[row][column] == @game_board[row][column+1] &&
-          @game_board[row][column] == @game_board[row][column+2] &&
-          @game_board[row][column] == @game_board[row][column+3]
-        return true
+    5.downto(0).each do |row|
+      (0..3).each do |column|
+        if @game_board[row][column] != '...' &&
+            @game_board[row][column] == @game_board[row][column+1] &&
+            @game_board[row][column] == @game_board[row][column+2] &&
+            @game_board[row][column] == @game_board[row][column+3]
+          return true
+        end
       end
     end
     false
