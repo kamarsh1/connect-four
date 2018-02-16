@@ -14,7 +14,7 @@ class Game
       make_a_move
       game_over = win_or_tie?
     end until game_over
-    # display_board
+    display_board
   end
 
   def make_a_move
@@ -22,7 +22,6 @@ class Game
       column = pick_a_column
       valid_move = valid_move?(column)
       valid_move ? place_chip_in_column(column) : invalid_selection
-      display_board
     end until valid_move
   end
 
@@ -37,10 +36,14 @@ class Game
       puts 'Pick a column (1 through 7)'
       gets.chomp.to_i
     else
-      column = rand(1..7)
+      column = random_number
       puts "Computer picked #{column}"
       column
     end
+  end
+
+  def random_number
+    rand(1..7)
   end
 
   def valid_move?(column)

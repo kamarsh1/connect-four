@@ -36,7 +36,7 @@ describe 'Game' do
         # end
 
         it 'displays the board' do
-          expect(game).to have_received(:display_board).exactly(4).times
+          expect(game).to have_received(:display_board).exactly(5).times
         end
 
         it 'makes a move' do
@@ -58,7 +58,6 @@ describe 'Game' do
           allow(game).to receive(:valid_move?).and_return(false, false, false, false, true)
           allow(game).to receive(:place_chip_in_column)
           allow(game).to receive(:invalid_selection)
-          allow(game).to receive(:display_board)
           game.make_a_move
         end
 
@@ -76,10 +75,6 @@ describe 'Game' do
 
         it 'places chip in column' do
           expect(game).to have_received(:place_chip_in_column).once
-        end
-
-        it 'displays the board' do
-          expect(game).to have_received(:display_board).exactly(5).times
         end
       end
     end
@@ -111,16 +106,19 @@ describe 'Game' do
 
     context 'when NOT player1' do
       before do
+        allow(game).to receive(:random_number).and_return(5)
         game.player1 = false
       end
 
-      it 'picks a random number between 1 and 7' do
-        expect(game.pick_a_column).to be_between(1, 7)
+      it 'prints a message' do
+        expect { game.pick_a_column }.to output("Computer picked 5\n").to_stdout
       end
+    end
+  end
 
-      # it 'prints a message' do       #### figure this out!!!
-      #   expect { game.pick_a_column }.to output("Computer picked").to_stdout
-      # end
+  describe '#random_move' do
+    it 'picks a random number between 1 and 7' do
+      expect(game.random_number).to be_between(1, 7)
     end
   end
 
