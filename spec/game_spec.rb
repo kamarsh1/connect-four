@@ -1,4 +1,4 @@
-require_relative '../connect_four'
+require_relative '../game'
 
 describe 'Game' do
   let(:game) { Game.new }
