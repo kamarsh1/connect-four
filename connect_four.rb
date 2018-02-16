@@ -57,7 +57,7 @@ class Game
   def place_chip_in_column(column)
     5.downto(0).each do |row|
       if @game_board[row][column-1] == '...'
-        @player1 ? @game_board[row][column-1] = 'RED' : @game_board[row][column-1] = 'BLK'
+        @game_board[row][column-1] = @player1 ? 'RED' : 'BLK'
         break
       end
     end
@@ -183,6 +183,3 @@ class Game
     1.times { puts }
   end
 end
-
-# game = Game.new
-# game.play
