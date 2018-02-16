@@ -83,7 +83,7 @@ class Game
       return true
     end
 
-    if diagonal_win?
+    if diagonal_win_up?
       return true
     end
     false
@@ -117,7 +117,7 @@ class Game
     false
   end
 
-  def diagonal_win?
+  def diagonal_win_up?
     (0..3).each do |col|
       5.downto(3).each do |row|
         if @game_board[row][col] != '...' &&

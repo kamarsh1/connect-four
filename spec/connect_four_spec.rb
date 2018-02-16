@@ -293,41 +293,12 @@ describe 'Game' do
     end
   end
 
-  describe '#check_for_tie' do
-    context 'when there is a tie' do
-      before do
-        game.game_board = Array.new(6){Array.new(7, 'NOT')}
-      end
-
-      it 'returns true' do
-        game.check_for_tie
-        expect(game.check_for_tie).to eq(true)
-      end
-    end
-
-    context 'when there is NOT a tie' do
-      before do
-        game.game_board = Array.new(6){Array.new(7, '...')}
-      end
-
-      it 'returns false' do
-        expect(game.check_for_tie).to eq(false)
-      end
-    end
-  end
-
-  describe '#print_tie_message' do
-    it 'prints a message' do
-      expect { game.print_tie_message }.to output("\n*************************************************\n****************** It's a TIE! ******************\n*************************************************\n\n").to_stdout
-    end
-  end
-
   describe '#check_for_win' do
     describe 'when horizontal win' do
       before do
         allow(game).to receive(:horizontal_win?).and_return(true)
         allow(game).to receive(:vertical_win?)
-        allow(game).to receive(:diagonal_win?)
+        allow(game).to receive(:diagonal_win_up?)
         game.check_for_win
       end
 
@@ -340,7 +311,7 @@ describe 'Game' do
       end
 
       it 'does not check for diagonal win' do
-        expect(game).not_to have_received(:diagonal_win?)
+        expect(game).not_to have_received(:diagonal_win_up?)
       end
 
       it 'returns true' do
@@ -352,7 +323,7 @@ describe 'Game' do
       before do
         allow(game).to receive(:horizontal_win?).and_return(false)
         allow(game).to receive(:vertical_win?).and_return(true)
-        allow(game).to receive(:diagonal_win?)
+        allow(game).to receive(:diagonal_win_up?)
         game.check_for_win
       end
 
@@ -365,7 +336,7 @@ describe 'Game' do
       end
 
       it 'does not check for diagonal win' do
-        expect(game).not_to have_received(:diagonal_win?)
+        expect(game).not_to have_received(:diagonal_win_up?)
       end
 
       it 'returns true' do
@@ -377,7 +348,7 @@ describe 'Game' do
       before do
         allow(game).to receive(:horizontal_win?).and_return(false)
         allow(game).to receive(:vertical_win?).and_return(false)
-        allow(game).to receive(:diagonal_win?).and_return(true)
+        allow(game).to receive(:diagonal_win_up?).and_return(true)
         game.check_for_win
       end
 
@@ -390,7 +361,7 @@ describe 'Game' do
       end
 
       it 'checks for diagonal win' do
-        expect(game).to have_received(:diagonal_win?)
+        expect(game).to have_received(:diagonal_win_up?)
       end
 
       it 'returns true' do
@@ -402,7 +373,7 @@ describe 'Game' do
       before do
         allow(game).to receive(:horizontal_win?).and_return(false)
         allow(game).to receive(:vertical_win?).and_return(false)
-        allow(game).to receive(:diagonal_win?).and_return(false)
+        allow(game).to receive(:diagonal_win_up?).and_return(false)
         game.check_for_win
       end
 
@@ -415,7 +386,7 @@ describe 'Game' do
       end
 
       it 'checks for diagonal win' do
-        expect(game).to have_received(:diagonal_win?)
+        expect(game).to have_received(:diagonal_win_up?)
       end
 
       it 'returns false' do
@@ -446,6 +417,35 @@ describe 'Game' do
     end
   end
 
+  describe '#check_for_tie' do
+    context 'when there is a tie' do
+      before do
+        game.game_board = Array.new(6){Array.new(7, 'NOT')}
+      end
+
+      it 'returns true' do
+        game.check_for_tie
+        expect(game.check_for_tie).to eq(true)
+      end
+    end
+
+    context 'when there is NOT a tie' do
+      before do
+        game.game_board = Array.new(6){Array.new(7, '...')}
+      end
+
+      it 'returns false' do
+        expect(game.check_for_tie).to eq(false)
+      end
+    end
+  end
+
+  describe '#print_tie_message' do
+    it 'prints a message' do
+      expect { game.print_tie_message }.to output("\n*************************************************\n****************** It's a TIE! ******************\n*************************************************\n\n").to_stdout
+    end
+  end
+
   describe '#horizontal_win?' do
     describe 'when the first column on the bottom row IS empty' do
       before do
@@ -453,7 +453,7 @@ describe 'Game' do
       end
 
       it 'we do not have a winner' do
-        expect(game.horizontal_win?).not_to eq(true)
+        expect(game.horizontal_win?).to eq(false)
       end
     end
 
@@ -482,12 +482,12 @@ describe 'Game' do
         end
 
         it 'we do not have a winner' do
-          expect(game.horizontal_win?).not_to eq(true)
+          expect(game.horizontal_win?).to eq(false)
         end
       end
     end
 
-    describe 'when the third column on the bottom row is NOT empty' do
+    describe 'when the fourth column on the bottom row is NOT empty' do
       describe 'and it matches the next 3 columns' do
         before do
           game.game_board[5][3] = 'BLK'
@@ -502,7 +502,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when the fourth column on the bottom row is NOT empty' do
+    describe 'when the fifth column on the bottom row is NOT empty' do
       before do
         game.game_board[5][4] = 'BLK'
       end
@@ -631,7 +631,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when the third column on the bottom row is NOT empty' do
+    describe 'when the fourth column on the bottom row is NOT empty' do
       describe 'and it matches the previous 3 rows' do
         before do
           game.game_board[5][3] = 'BLK'
@@ -735,14 +735,14 @@ describe 'Game' do
     end
   end
 
-  describe '#diagonal_win?' do
+  describe '#diagonal_win_up?' do
     describe 'when the first column in the bottom row is empty' do
       before do
         game.game_board[5][0] = '...'
       end
 
       it 'we do not have a winner' do
-        expect(game.diagonal_win?).to eq(false)
+        expect(game.diagonal_win_up?).to eq(false)
       end
     end
 
@@ -756,7 +756,7 @@ describe 'Game' do
         end
 
         it 'we have a winner!' do
-          expect(game.diagonal_win?).to eq(true)
+          expect(game.diagonal_win_up?).to eq(true)
         end
       end
     end
@@ -771,15 +771,14 @@ describe 'Game' do
         end
 
         it 'we do not have a winner' do
-          expect(game.diagonal_win?).to eq(false)
+          expect(game.diagonal_win_up?).to eq(false)
         end
       end
     end
 
-    describe 'when the fourth row in the fourth column is NOT empty' do
+    describe 'when the fourth column on the fourth row is NOT empty' do
       describe 'and it matches the next 3 items on the diagonal going up' do
         before do
-          ## fixing these cols & rows
           game.game_board[3][3] = 'BLK'
           game.game_board[2][4] = 'BLK'
           game.game_board[1][5] = 'BLK'
@@ -787,10 +786,19 @@ describe 'Game' do
         end
 
         it 'we have a winner!' do
-          expect(game.diagonal_win?).to eq(true)
+          expect(game.diagonal_win_up?).to eq(true)
         end
       end
     end
 
+    describe 'when the fifth column on the bottom row is NOT empty' do
+      before do
+        game.game_board[5][4] = 'BLK'
+      end
+
+      it 'returns false' do
+        expect(game.diagonal_win_up?).to eq(false)
+      end
+    end
   end
 end
