@@ -495,17 +495,7 @@ describe 'Game' do
   end
 
   describe '#horizontal_win?' do
-    describe 'when the first column on the bottom row IS empty' do
-      before do
-        game.game_board[5][0] = '...'
-      end
-
-      it 'we do not have a winner' do
-        expect(game.horizontal_win?).to eq(false)
-      end
-    end
-
-    describe 'when the first column on the bottom row is NOT empty' do
+    describe 'when the 1st column on the bottom row is NOT empty' do
       describe 'and it matches the next 3 columns' do
         before do
           game.game_board[5][0] = 'BLK'
@@ -520,7 +510,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when the first column on the bottom row is NOT empty' do
+    describe 'when the 1st column on the bottom row is NOT empty' do
       describe 'and it does NOT match any of the next 3 columns' do
         before do
           game.game_board[5][0] = 'BLK'
@@ -535,7 +525,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when the fourth column on the bottom row is NOT empty' do
+    describe 'when the 4th column on the bottom row is NOT empty' do
       describe 'and it matches the next 3 columns' do
         before do
           game.game_board[5][3] = 'BLK'
@@ -550,7 +540,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when the fifth column on the bottom row is NOT empty' do
+    describe 'when the 5th column on the bottom row is NOT empty' do
       before do
         game.game_board[5][4] = 'BLK'
       end
@@ -639,17 +629,7 @@ describe 'Game' do
   end
 
   describe '#vertical_win?' do
-    describe 'when the first column on the bottom row IS empty' do
-      before do
-        game.game_board[5][0] = '...'
-      end
-
-      it 'we do not have a winner' do
-        expect(game.vertical_win?).to eq(false)
-      end
-    end
-
-    describe 'when the first column on the bottom row is NOT empty' do
+    describe 'when the 1st column on the bottom row is NOT empty' do
       describe 'and it matches the previous 3 rows' do
         before do
           game.game_board[5][0] = 'BLK'
@@ -664,7 +644,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when the first column on the bottom row is NOT empty' do
+    describe 'when the 1st column on the bottom row is NOT empty' do
       describe 'and it does NOT match any of the previous 3 rows' do
         before do
           game.game_board[5][0] = 'BLK'
@@ -679,13 +659,13 @@ describe 'Game' do
       end
     end
 
-    describe 'when the fourth column on the bottom row is NOT empty' do
+    describe 'when the 4th column on the 4th row is NOT empty' do
       describe 'and it matches the previous 3 rows' do
         before do
-          game.game_board[5][3] = 'BLK'
-          game.game_board[4][3] = 'BLK'
           game.game_board[3][3] = 'BLK'
           game.game_board[2][3] = 'BLK'
+          game.game_board[1][3] = 'BLK'
+          game.game_board[0][3] = 'BLK'
         end
 
         it 'we have a winner!' do
@@ -694,7 +674,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when the first column on the third row is NOT empty' do
+    describe 'when the 1st column on the third row is NOT empty' do
       before do
         game.game_board[2][1] = 'BLK'
       end
@@ -704,7 +684,7 @@ describe 'Game' do
       end
     end
 
-    describe 'when there are no winners in the first column' do
+    describe 'when there are no winners in the 1st column' do
       describe 'and there is a winner in the next column' do
         before do
           game.game_board[0][0] = 'BLK'
@@ -784,16 +764,6 @@ describe 'Game' do
   end
 
   describe '#diagonal_win_up?' do
-    describe 'when the 1st column in the bottom row is empty' do
-      before do
-        game.game_board[5][0] = '...'
-      end
-
-      it 'we do not have a winner' do
-        expect(game.diagonal_win_up?).to eq(false)
-      end
-    end
-
     describe 'when the 1st column on the bottom row is NOT empty' do
       describe 'and it matches the next 3 items on the diagonal going up' do
         before do
@@ -857,16 +827,6 @@ describe 'Game' do
   end
 
   describe '#diagonal_win_down?' do
-    describe 'when the 2nd column on the top row is empty' do
-      before do
-        game.game_board[0][0] = '...'
-      end
-
-      it 'returns false' do
-        expect(game.diagonal_win_down?).to eq(false)
-      end
-    end
-
     describe 'when the 1st column on the top row is NOT empty' do
       describe 'and it matches the next 3 items on the diagonal going down' do
         before do
