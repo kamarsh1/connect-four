@@ -9,12 +9,16 @@ class Game
 
   def play
     begin
-      @player1 = !@player1
+      toggle_player
       display_board
       make_a_move
       game_over = win_or_tie?
     end until game_over
     display_board
+  end
+
+  def toggle_player
+    @player1 = !@player1
   end
 
   def make_a_move

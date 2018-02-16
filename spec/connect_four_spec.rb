@@ -21,19 +21,16 @@ describe 'Game' do
     context 'when the game is NOT over' do
       context 'loops until the game IS over' do
         before do
+          allow(game).to receive(:toggle_player).and_return(true)
           allow(game).to receive(:display_board)
           allow(game).to receive(:make_a_move)
           allow(game).to receive(:win_or_tie?).and_return(false, false, false, true)
           game.play
         end
 
-        #### Still need to work this out ###
-        #### problem is I need to set player1 to false b4 the game plays
-        ####
-        # it 'toggles player1' do
-        #   player1_toggle = !game.player1
-        #   expect(game.player1).to eq(player1_toggle)
-        # end
+        it 'toggles the player' do
+          expect(game).to have_received(:toggle_player).exactly(4).times
+        end
 
         it 'displays the board' do
           expect(game).to have_received(:display_board).exactly(5).times
@@ -47,6 +44,23 @@ describe 'Game' do
           expect(game).to have_received(:win_or_tie?).exactly(4).times
         end
       end
+    end
+  end
+
+  describe '#toggle player' do
+    let(:player1) { false }
+
+    it 'toggles the boolean assigned to player1' do
+      game.toggle_player
+      expect(game.player1).to eq(true)
+    end
+  end
+
+  describe '#display_board' do
+    let(:board) {"\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n\n"}
+
+    it 'prints out the game board' do
+      expect { game.display_board }.to output(board).to_stdout
     end
   end
 
@@ -77,14 +91,6 @@ describe 'Game' do
           expect(game).to have_received(:place_chip_in_column).once
         end
       end
-    end
-  end
-
-  describe '#display_board' do
-    let(:board) {"\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n[\"...\", \"...\", \"...\", \"...\", \"...\", \"...\", \"...\"]\n\n"}
-
-    it 'prints out the game board' do
-      expect { game.display_board }.to output(board).to_stdout
     end
   end
 
