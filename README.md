@@ -12,5 +12,4 @@ To play this game:
 * Run the game by typing `ruby connect_four.rb` in the terminal.
 
 To run the tests for this game:
-* If necessary, follow instructions above to download Ruby and clone the repo.
-* Type `rspec spec/game_spec.rb` in the terminal to execute the tests.
+* From within the connect-four directory, type `rspec spec/game_spec.rb` in the terminal.
