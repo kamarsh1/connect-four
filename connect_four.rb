@@ -131,6 +131,20 @@ class Game
     false
   end
 
+  def diagonal_win_down?
+    (0..3).each do |col|
+      (0..2).each do |row|
+        if @game_board[row][col] != '...' &&
+            @game_board[row][col] == @game_board[row+1][col+1] &&
+            @game_board[row][col] == @game_board[row+2][col+2] &&
+            @game_board[row][col] == @game_board[row+3][col+3]
+          return true
+        end
+      end
+    end
+    false
+  end
+
   def print_win_message
     @player1 ? player = 'RED' : player = 'BLK'
     1.times { puts }
