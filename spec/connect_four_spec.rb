@@ -299,6 +299,7 @@ describe 'Game' do
         allow(game).to receive(:horizontal_win?).and_return(true)
         allow(game).to receive(:vertical_win?)
         allow(game).to receive(:diagonal_win_up?)
+        allow(game).to receive(:diagonal_win_down?)
         game.check_for_win
       end
 
@@ -310,8 +311,12 @@ describe 'Game' do
         expect(game).not_to have_received(:vertical_win?)
       end
 
-      it 'does not check for diagonal win' do
+      it 'does not check for diagonal win up' do
         expect(game).not_to have_received(:diagonal_win_up?)
+      end
+
+      it 'does not check for diagonal win down' do
+        expect(game).not_to have_received(:diagonal_win_down?)
       end
 
       it 'returns true' do
@@ -324,6 +329,7 @@ describe 'Game' do
         allow(game).to receive(:horizontal_win?).and_return(false)
         allow(game).to receive(:vertical_win?).and_return(true)
         allow(game).to receive(:diagonal_win_up?)
+        allow(game).to receive(:diagonal_win_down?)
         game.check_for_win
       end
 
@@ -335,8 +341,12 @@ describe 'Game' do
         expect(game).to have_received(:vertical_win?)
       end
 
-      it 'does not check for diagonal win' do
+      it 'does not check for diagonal win up' do
         expect(game).not_to have_received(:diagonal_win_up?)
+      end
+
+      it 'does not check for diagonal win down' do
+        expect(game).not_to have_received(:diagonal_win_down?)
       end
 
       it 'returns true' do
@@ -344,11 +354,12 @@ describe 'Game' do
       end
     end
 
-    describe 'when diagonal win' do
+    describe 'when diagonal win up' do
       before do
         allow(game).to receive(:horizontal_win?).and_return(false)
         allow(game).to receive(:vertical_win?).and_return(false)
         allow(game).to receive(:diagonal_win_up?).and_return(true)
+        allow(game).to receive(:diagonal_win_down?)
         game.check_for_win
       end
 
@@ -362,6 +373,40 @@ describe 'Game' do
 
       it 'checks for diagonal win' do
         expect(game).to have_received(:diagonal_win_up?)
+      end
+
+      it 'does not check for diagonal win down' do
+        expect(game).not_to have_received(:diagonal_win_down?)
+      end
+
+      it 'returns true' do
+        expect(game.check_for_win).to eq(true)
+      end
+    end
+
+    describe 'diagonal win down' do
+      before do
+        allow(game).to receive(:horizontal_win?).and_return(false)
+        allow(game).to receive(:vertical_win?).and_return(false)
+        allow(game).to receive(:diagonal_win_up?).and_return(false)
+        allow(game).to receive(:diagonal_win_down?).and_return(true)
+        game.check_for_win
+      end
+
+      it 'checks for horizontal win' do
+        expect(game).to have_received(:horizontal_win?)
+      end
+
+      it 'checks for vertical win' do
+        expect(game).to have_received(:vertical_win?)
+      end
+
+      it 'checks for diagonal win up' do
+        expect(game).to have_received(:diagonal_win_up?)
+      end
+
+      it 'checks for diagonal win down' do
+        expect(game).to have_received(:diagonal_win_down?)
       end
 
       it 'returns true' do
@@ -374,6 +419,7 @@ describe 'Game' do
         allow(game).to receive(:horizontal_win?).and_return(false)
         allow(game).to receive(:vertical_win?).and_return(false)
         allow(game).to receive(:diagonal_win_up?).and_return(false)
+        allow(game).to receive(:diagonal_win_down?).and_return(false)
         game.check_for_win
       end
 
@@ -385,8 +431,12 @@ describe 'Game' do
         expect(game).to have_received(:vertical_win?)
       end
 
-      it 'checks for diagonal win' do
+      it 'checks for diagonal win up' do
         expect(game).to have_received(:diagonal_win_up?)
+      end
+
+      it 'checks for diagonal win down' do
+        expect(game).to have_received(:diagonal_win_down?)
       end
 
       it 'returns false' do
@@ -887,6 +937,23 @@ describe 'Game' do
             it 'we have a winner!' do
               expect(game.diagonal_win_down?).to eq(true)
             end
+          end
+        end
+      end
+    end
+
+    describe 'when the 1st column in the 2nd row is blank' do
+      describe 'and the 2nd column in the 3rd row is not blank' do
+        describe 'and it matches the next 3 items going down' do
+          before do
+            game.game_board[1][0] = '...'
+            game.game_board[2][1] = 'RED'
+            game.game_board[3][2] = 'RED'
+            game.game_board[4][3] = 'RED'
+            game.game_board[5][4] = 'RED'
+          end
+          it 'returns true' do
+            expect(game.diagonal_win_down?).to eq(true)
           end
         end
       end

@@ -14,6 +14,7 @@ class Game
       make_a_move
       game_over = win_or_tie?
     end until game_over
+    # display_board
   end
 
   def make_a_move
@@ -63,13 +64,13 @@ class Game
     win = check_for_win
     if win
       print_win_message
-      return win
+      return true
     end
 
     tie = check_for_tie
     if tie
       print_tie_message
-      return tie
+      return true
     end
     false
   end
@@ -84,6 +85,10 @@ class Game
     end
 
     if diagonal_win_up?
+      return true
+    end
+
+    if diagonal_win_down?
       return true
     end
     false
