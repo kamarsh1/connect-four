@@ -100,31 +100,29 @@ describe 'Game' do
         game.player1 = true
       end
 
-      it 'asks player to pick a column' do
-        expect { game.pick_a_column }.to output("Pick a column (1 through 7)\n").to_stdout
+      it 'asks player1 to pick a column' do
+        expect { game.pick_a_column }.to output("Player 1, pick a column (1 through 7)\n").to_stdout
+      end
+
+      it 'gets a number from input' do
+        allow(game).to receive(:gets).and_return('5')
+        expect(game.pick_a_column).to eq(5)
+      end
+    end
+
+    context 'when NOT player1' do
+      before do
+        game.player1 = false
+      end
+
+      it 'asks player2 to pick a column' do
+        expect { game.pick_a_column }.to output("Player 2, pick a column (1 through 7)\n").to_stdout
       end
 
       it 'gets a number from input' do
         allow(game).to receive(:gets).and_return('3')
         expect(game.pick_a_column).to eq(3)
       end
-    end
-
-    context 'when NOT player1' do
-      before do
-        allow(game).to receive(:random_number).and_return(5)
-        game.player1 = false
-      end
-
-      it 'prints a message' do
-        expect { game.pick_a_column }.to output("Computer picked 5\n").to_stdout
-      end
-    end
-  end
-
-  describe '#random_move' do
-    it 'picks a random number between 1 and 7' do
-      expect(game.random_number).to be_between(1, 7)
     end
   end
 

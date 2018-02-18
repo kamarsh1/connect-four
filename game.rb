@@ -37,17 +37,13 @@ class Game
 
   def pick_a_column
     if @player1
-      puts 'Pick a column (1 through 7)'
-      gets.chomp.to_i
+      player = 'PLAYER 1'
     else
-      column = random_number
-      puts "Computer picked #{column}"
-      column
+      player = 'PLAYER 2'
     end
-  end
 
-  def random_number
-    rand(1..7)
+    puts "#{player}, pick a column (1 through 7)"
+    gets.chomp.to_i
   end
 
   def valid_move?(column)
