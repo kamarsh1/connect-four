@@ -4,8 +4,9 @@ describe 'Game' do
   let(:game) { Game.new }
 
   describe '#initialize' do
+    let(:initial_board) { [["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."]] }
     it 'creates the game board' do
-      expect(game.game_board).to eq([["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."], ["...", "...", "...", "...", "...", "...", "..."]])
+      expect(game.game_board).to eq(initial_board)
     end
 
     it 'sets game over flag' do
@@ -95,13 +96,15 @@ describe 'Game' do
   end
 
   describe '#pick_a_column' do
+    let(:pick_col_message) { "PLAYER 1, pick a column (1 through 7)\n" }
+
     context 'when player1' do
       before do
         game.player1 = true
       end
 
       it 'asks player1 to pick a column' do
-        expect { game.pick_a_column }.to output("Player 1, pick a column (1 through 7)\n").to_stdout
+        expect { game.pick_a_column }.to output(pick_col_message).to_stdout
       end
 
       it 'gets a number from input' do
@@ -111,12 +114,14 @@ describe 'Game' do
     end
 
     context 'when NOT player1' do
+      let(:pick_col_message) { "PLAYER 2, pick a column (1 through 7)\n" }
+
       before do
         game.player1 = false
       end
 
       it 'asks player2 to pick a column' do
-        expect { game.pick_a_column }.to output("Player 2, pick a column (1 through 7)\n").to_stdout
+        expect { game.pick_a_column }.to output(pick_col_message).to_stdout
       end
 
       it 'gets a number from input' do
@@ -217,8 +222,10 @@ describe 'Game' do
   end
 
   describe '#invalid_selection' do
+    let(:invalid_message) { "Invalid Selection\n" }
+
     it 'prints a message' do
-      expect { game.invalid_selection }.to output("Invalid Selection\n").to_stdout
+      expect { game.invalid_selection }.to output(invalid_message).to_stdout
     end
   end
 
@@ -449,22 +456,26 @@ describe 'Game' do
 
   describe '#print_win_message' do
     context 'when player1 wins' do
+      let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! RED WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
+
       before do
         game.player1 = true
       end
 
       it 'prints RED wins message' do
-        expect { game.print_win_message }.to output("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! RED WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n").to_stdout
+        expect { game.print_win_message }.to output(win_message).to_stdout
       end
     end
 
     context 'when player2 wins' do
+      let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! BLK WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
+
       before do
         game.player1 = false
       end
 
       it 'prints BLK wins message' do
-        expect { game.print_win_message }.to output("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! BLK WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n").to_stdout
+        expect { game.print_win_message }.to output(win_message).to_stdout
       end
     end
   end
@@ -493,8 +504,9 @@ describe 'Game' do
   end
 
   describe '#print_tie_message' do
+    let(:tie_message) { "\n*************************************************\n****************** It's a TIE! ******************\n*************************************************\n\n" }
     it 'prints a message' do
-      expect { game.print_tie_message }.to output("\n*************************************************\n****************** It's a TIE! ******************\n*************************************************\n\n").to_stdout
+      expect { game.print_tie_message }.to output(tie_message).to_stdout
     end
   end
 
