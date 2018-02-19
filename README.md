@@ -1,6 +1,6 @@
 # README
 
-Connect Four is a person vs. computer game that is run in the Terminal.
+Connect Four is a two player game that is run in the Terminal.
 
 For more information about Connect Four, [click here](https://en.wikipedia.org/wiki/Connect_Four).
 
