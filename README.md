@@ -12,4 +12,5 @@ To play this game:
 * Run the game by typing `ruby connect_four.rb` in the terminal.
 
 To run the tests for this game:
+* You will need RSpec installed. Install by typing `gem install rspec` in the terminal.
 * From within the connect-four directory, type `rspec spec/game_spec.rb` in the terminal.
