@@ -66,18 +66,13 @@ class Game
   def pick_a_column
     player = @player1 ? 'PLAYER 1' : 'PLAYER 2'
 
-    if @challenger == 'HUMAN'
+    if @challenger == 'HUMAN' || @player1
       puts "#{player}, pick a column (1 through 7)"
-      return gets.chomp.to_i
+      gets.chomp.to_i
     else
-      if @player1
-        puts "#{player}, pick a column (1 through 7)"
-        return gets.chomp.to_i
-      else
-        column = random_number
-        puts "Computer picked #{column}"
-        return column
-      end
+      column = random_number
+      puts "Computer picked #{column}"
+      column
     end
   end
 
