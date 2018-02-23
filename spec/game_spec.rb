@@ -19,16 +19,23 @@ describe 'Game' do
   end
 
   describe '#play' do
+    before do
+      allow(game).to receive(:determine_challenger)
+      allow(game).to receive(:toggle_player).and_return(true)
+      allow(game).to receive(:display_board)
+      allow(game).to receive(:make_a_move)
+      allow(game).to receive(:win_or_tie?).and_return(false, false, false, true)
+      game.play
+    end
+
+    context 'when the game first begins' do
+      it 'determines the challenger' do
+        expect(game).to have_received(:determine_challenger)
+      end
+    end
+
     context 'when the game is NOT over' do
       context 'loops until the game IS over' do
-        before do
-          allow(game).to receive(:toggle_player).and_return(true)
-          allow(game).to receive(:display_board)
-          allow(game).to receive(:make_a_move)
-          allow(game).to receive(:win_or_tie?).and_return(false, false, false, true)
-          game.play
-        end
-
         it 'toggles the player' do
           expect(game).to have_received(:toggle_player).exactly(4).times
         end
@@ -44,6 +51,69 @@ describe 'Game' do
         it 'checks for game over' do
           expect(game).to have_received(:win_or_tie?).exactly(4).times
         end
+      end
+    end
+  end
+
+  describe '#determine_challenger' do
+    context 'when an invalid challenger is input' do
+      context 'it loops until the challenger is valid' do
+        before do
+          allow(game).to receive(:ask_who_is_playing)
+          allow(game).to receive(:get_challenger)
+          allow(game).to receive(:invalid_selection)
+          allow(game).to receive(:valid_challenger?).and_return(false, false, true)
+          game.determine_challenger
+        end
+
+        it 'gets who is playing' do
+          expect(game).to have_received(:ask_who_is_playing).exactly(3).times
+        end
+
+        it 'prints invalid message' do
+          expect(game).to have_received(:invalid_selection).exactly(2).times
+        end
+
+        it 'gets the challenger' do
+          expect(game).to have_received(:get_challenger).exactly(3).times
+        end
+
+        it 'validates the input' do
+          expect(game).to have_received(:valid_challenger?).exactly(3).times
+        end
+      end
+    end
+  end
+
+  describe '#ask_who_is_playing' do
+    let(:who_is_playing_message) { "\nWho is playing?\n\nEnter 1 to play against the computer.\nEnter 2 to play another person.\n" }
+
+    it 'asks the user who they want to play against' do
+      expect { game.ask_who_is_playing }.to output(who_is_playing_message).to_stdout
+    end
+  end
+
+  describe '#get_challenger' do
+    it 'gets a challenger from input' do
+      allow(game).to receive(:gets).and_return('2')
+      expect(game.get_challenger).to eq(2)
+    end
+  end
+
+  describe '#valid_challenger?' do
+    context 'when the challenger selected IS valid' do
+      let(:challenger) { 2 }
+
+      it 'returns true' do
+        expect(game.valid_challenger?(challenger)).to eq(true)
+      end
+    end
+
+    context 'when the challenger selected is NOT valid' do
+      let(:challenger) { 4 }
+
+      it 'returns false' do
+        expect(game.valid_challenger?(challenger)).to eq(false)
       end
     end
   end
@@ -96,38 +166,84 @@ describe 'Game' do
   end
 
   describe '#pick_a_column' do
-    let(:pick_col_message) { "PLAYER 1, pick a column (1 through 7)\n" }
-
-    context 'when player1' do
+    context 'when HUMAN vs HUMAN' do
       before do
-        game.player1 = true
+        game.challenger = 'HUMAN'
       end
 
-      it 'asks player1 to pick a column' do
-        expect { game.pick_a_column }.to output(pick_col_message).to_stdout
+      context 'when player1' do
+        let(:pick_col_message) { "PLAYER 1, pick a column (1 through 7)\n" }
+
+        before do
+          game.player1 = true
+        end
+
+        it 'asks player1 to pick a column' do
+          expect { game.pick_a_column }.to output(pick_col_message).to_stdout
+        end
+
+        it 'gets a number from input' do
+          allow(game).to receive(:gets).and_return('5')
+          expect(game.pick_a_column).to eq(5)
+        end
       end
 
-      it 'gets a number from input' do
-        allow(game).to receive(:gets).and_return('5')
-        expect(game.pick_a_column).to eq(5)
+      context 'when NOT player1' do
+        let(:pick_col_message) { "PLAYER 2, pick a column (1 through 7)\n" }
+
+        before do
+          game.player1 = false
+        end
+
+        it 'asks player2 to pick a column' do
+          expect { game.pick_a_column }.to output(pick_col_message).to_stdout
+        end
+
+        it 'gets a number from input' do
+          allow(game).to receive(:gets).and_return('3')
+          expect(game.pick_a_column).to eq(3)
+        end
       end
     end
 
-    context 'when NOT player1' do
-      let(:pick_col_message) { "PLAYER 2, pick a column (1 through 7)\n" }
-
+    context 'when HUMAN vs COMPUTER' do
       before do
-        game.player1 = false
+        game.challenger = 'COMPUTER'
       end
 
-      it 'asks player2 to pick a column' do
-        expect { game.pick_a_column }.to output(pick_col_message).to_stdout
+      context 'when player1' do
+        let(:pick_col_message) { "PLAYER 1, pick a column (1 through 7)\n" }
+
+        before do
+          game.player1 = true
+        end
+
+        it 'asks player1 to pick a column' do
+          expect { game.pick_a_column }.to output(pick_col_message).to_stdout
+        end
+
+        it 'gets a number from input' do
+          allow(game).to receive(:gets).and_return('6')
+          expect(game.pick_a_column).to eq(6)
+        end
       end
 
-      it 'gets a number from input' do
-        allow(game).to receive(:gets).and_return('3')
-        expect(game.pick_a_column).to eq(3)
+      context 'when NOT player1' do
+        before do
+          game.player1 = false
+          allow(game).to receive(:random_number).and_return(1)
+        end
+
+        it 'prints a message' do
+          expect { game.pick_a_column }.to output("Computer picked 1\n").to_stdout
+        end
       end
+    end
+  end
+
+  describe '#random_number' do
+    it 'picks a random number between 1 and 7' do
+      expect(game.random_number).to be_between(1, 7)
     end
   end
 

@@ -1,5 +1,5 @@
 class Game
-  attr_accessor :game_board, :game_over, :player1
+  attr_accessor :game_board, :game_over, :player1, :challenger
 
   def initialize
     @game_board = Array.new(6){Array.new(7, '...')}
@@ -8,6 +8,8 @@ class Game
   end
 
   def play
+    determine_challenger
+
     begin
       toggle_player
       display_board
@@ -15,6 +17,32 @@ class Game
       game_over = win_or_tie?
     end until game_over
     display_board
+  end
+
+  def determine_challenger
+    begin
+      ask_who_is_playing
+      challenger = get_challenger
+      valid_challenger = valid_challenger?(challenger)
+      invalid_selection unless valid_challenger
+    end until valid_challenger
+    @challenger = challenger == 1 ? 'COMPUTER' : 'HUMAN'
+  end
+
+  def ask_who_is_playing
+    1.times { puts }
+    puts 'Who is playing?'
+    1.times { puts }
+    puts 'Enter 1 to play against the computer.'
+    puts 'Enter 2 to play another person.'
+  end
+
+  def get_challenger
+    gets.chomp.to_i
+  end
+
+  def valid_challenger?(challenger)
+    challenger.between?(1,2)
   end
 
   def toggle_player
@@ -36,14 +64,25 @@ class Game
   end
 
   def pick_a_column
-    if @player1
-      player = 'PLAYER 1'
-    else
-      player = 'PLAYER 2'
-    end
+    player = @player1 ? 'PLAYER 1' : 'PLAYER 2'
 
-    puts "#{player}, pick a column (1 through 7)"
-    gets.chomp.to_i
+    if @challenger == 'HUMAN'
+      puts "#{player}, pick a column (1 through 7)"
+      return gets.chomp.to_i
+    else
+      if @player1
+        puts "#{player}, pick a column (1 through 7)"
+        return gets.chomp.to_i
+      else
+        column = random_number
+        puts "Computer picked #{column}"
+        return column
+      end
+    end
+  end
+
+  def random_number
+    rand(1..7)
   end
 
   def valid_move?(column)
