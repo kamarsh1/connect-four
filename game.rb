@@ -1,4 +1,9 @@
+require_relative 'app/models/make_a_move'
+require_relative 'app/models/determine_challenger'
+require_relative 'app/models/win_or_tie'
+
 class Game
+  include MakeAMove, DetermineChallenger, WinOrTie
   attr_accessor :game_board, :game_over, :player1, :challenger
 
   def initialize
@@ -19,42 +24,8 @@ class Game
     display_board
   end
 
-  def determine_challenger
-    begin
-      ask_who_is_playing
-      challenger = get_challenger
-      valid_challenger = valid_challenger?(challenger)
-      invalid_selection unless valid_challenger
-    end until valid_challenger
-    @challenger = challenger == 1 ? 'COMPUTER' : 'HUMAN'
-  end
-
-  def ask_who_is_playing
-    1.times { puts }
-    puts 'Who is playing?'
-    1.times { puts }
-    puts 'Enter 1 to play against the computer.'
-    puts 'Enter 2 to play another person.'
-  end
-
-  def get_challenger
-    gets.chomp.to_i
-  end
-
-  def valid_challenger?(challenger)
-    challenger.between?(1,2)
-  end
-
   def toggle_player
     @player1 = !@player1
-  end
-
-  def make_a_move
-    begin
-      column = pick_a_column
-      valid_move = valid_move?(column)
-      valid_move ? place_chip_in_column(column) : invalid_selection
-    end until valid_move
   end
 
   def display_board
@@ -63,153 +34,7 @@ class Game
     1.times { puts }
   end
 
-  def pick_a_column
-    player = @player1 ? 'PLAYER 1' : 'PLAYER 2'
-
-    if @challenger == 'HUMAN' || @player1
-      puts "#{player}, pick a column (1 through 7)"
-      gets.chomp.to_i
-    else
-      column = random_number
-      puts "Computer picked #{column}"
-      column
-    end
-  end
-
-  def random_number
-    rand(1..7)
-  end
-
-  def valid_move?(column)
-    column.between?(1,7) && @game_board[0][column-1] == '...'
-  end
-
-  def place_chip_in_column(column)
-    5.downto(0).each do |row|
-      if @game_board[row][column-1] == '...'
-        @game_board[row][column-1] = @player1 ? 'RED' : 'BLK'
-        break
-      end
-    end
-  end
-
   def invalid_selection
     puts 'Invalid Selection'
-  end
-
-  def win_or_tie?
-    win = check_for_win
-    if win
-      print_win_message
-      return true
-    end
-
-    tie = check_for_tie
-    if tie
-      print_tie_message
-      return true
-    end
-    false
-  end
-
-  def check_for_win
-    if horizontal_win?
-      return true
-    end
-
-    if vertical_win?
-      return true
-    end
-
-    if diagonal_win_up?
-      return true
-    end
-
-    if diagonal_win_down?
-      return true
-    end
-    false
-  end
-
-  def horizontal_win?
-    5.downto(0).each do |row|
-      (0..3).each do |column|
-        if @game_board[row][column] != '...' &&
-            @game_board[row][column] == @game_board[row][column+1] &&
-            @game_board[row][column] == @game_board[row][column+2] &&
-            @game_board[row][column] == @game_board[row][column+3]
-          return true
-        end
-      end
-    end
-    false
-  end
-
-  def vertical_win?
-    (0..6).each do |column|
-      5.downto(3).each do |row|
-        if @game_board[row][column] != '...' &&
-            @game_board[row][column] == @game_board[row-1][column] &&
-            @game_board[row][column] == @game_board[row-2][column] &&
-            @game_board[row][column] == @game_board[row-3][column]
-          return true
-        end
-      end
-    end
-    false
-  end
-
-  def diagonal_win_up?
-    (0..3).each do |col|
-      5.downto(3).each do |row|
-        if @game_board[row][col] != '...' &&
-            @game_board[row][col] == @game_board[row-1][col+1] &&
-            @game_board[row][col] == @game_board[row-2][col+2] &&
-            @game_board[row][col] == @game_board[row-3][col+3]
-          return true
-        end
-      end
-    end
-    false
-  end
-
-  def diagonal_win_down?
-    (0..3).each do |col|
-      (0..2).each do |row|
-        if @game_board[row][col] != '...' &&
-            @game_board[row][col] == @game_board[row+1][col+1] &&
-            @game_board[row][col] == @game_board[row+2][col+2] &&
-            @game_board[row][col] == @game_board[row+3][col+3]
-          return true
-        end
-      end
-    end
-    false
-  end
-
-  def print_win_message
-    @player1 ? player = 'RED' : player = 'BLK'
-    1.times { puts }
-    puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    puts "!!!!!!!!!!!!!!!!!!! #{player} WINS !!!!!!!!!!!!!!!!!!!!"
-    puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    1.times { puts }
-  end
-
-  def check_for_tie
-    (0..6).each do |i|
-      if @game_board[0][i] == '...'
-        return false
-      end
-    end
-    true
-  end
-
-  def print_tie_message
-    1.times { puts }
-    puts '*************************************************'
-    puts "****************** It's a TIE! ******************"
-    puts '*************************************************'
-    1.times { puts }
   end
 end
