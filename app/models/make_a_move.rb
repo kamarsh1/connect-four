@@ -1,27 +1,12 @@
+require_relative '../models/player'
+
 module MakeAMove
   def make_a_move
     begin
-      column = pick_a_column
+      column = Player.pick_a_column(@player1, @challenger)
       valid_move = valid_move?(column)
       valid_move ? place_chip_in_column(column) : invalid_selection
     end until valid_move
-  end
-
-  def pick_a_column
-    player = @player1 ? 'PLAYER 1' : 'PLAYER 2'
-
-    if @challenger == 'HUMAN' || @player1
-      puts "#{player}, pick a column (1 through 7)"
-      gets.chomp.to_i
-    else
-      column = random_number
-      puts "Computer picked #{column}"
-      column
-    end
-  end
-
-  def random_number
-    rand(1..7)
   end
 
   def valid_move?(column)
