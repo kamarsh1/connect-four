@@ -1,4 +1,4 @@
-require_relative '../game'
+require_relative '../app/models/game'
 require_relative '../app/models/determine_challenger'
 
 describe 'DetermineChallenger' do

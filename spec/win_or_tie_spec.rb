@@ -1,4 +1,4 @@
-require_relative '../game'
+require_relative '../app/models/game'
 require_relative '../app/models/win_or_tie'
 
 describe 'WinOrTie' do

@@ -1,4 +1,4 @@
-require_relative '../game'
+require_relative '../app/models/game'
 
 describe 'Player' do
   let(:game) { Game.new }
@@ -69,12 +69,6 @@ describe 'Player' do
           expect { Player.pick_a_column(player1, game.challenger) }.to output("Computer picked 1\n").to_stdout
         end
       end
-    end
-  end
-
-  describe '#random_number' do
-    it 'picks a random number between 1 and 7' do
-      expect(Player.random_number).to be_between(1, 7)
     end
   end
 end

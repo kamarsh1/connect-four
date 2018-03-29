@@ -1,6 +1,6 @@
-require_relative 'app/models/make_a_move'
-require_relative 'app/models/determine_challenger'
-require_relative 'app/models/win_or_tie'
+require_relative 'make_a_move'
+require_relative 'determine_challenger'
+require_relative 'win_or_tie'
 
 class Game
   include MakeAMove, DetermineChallenger, WinOrTie
