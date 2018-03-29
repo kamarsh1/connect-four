@@ -4,15 +4,15 @@ require_relative 'win_or_tie'
 
 class Game
   include MakeAMove, DetermineChallenger, WinOrTie
-  attr_accessor :game_board, :game_over, :player1, :challenger
+  attr_accessor :game_board, :player1, :challenger
 
   def initialize
     @game_board = Array.new(6){Array.new(7, '...')}
-    @game_over = false
     @player1 = false
   end
 
   def play
+    game_over = false
     @challenger = determine_challenger
 
     begin

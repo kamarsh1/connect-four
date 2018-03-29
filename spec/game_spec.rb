@@ -9,10 +9,6 @@ describe 'Game' do
       expect(game.game_board).to eq(initial_board)
     end
 
-    it 'sets game over flag' do
-      expect(game.game_over).to eq(false)
-    end
-
     it 'sets player1' do
       expect(game.player1).to eq(false)
     end
