@@ -15,31 +15,20 @@ module WinOrTie
   end
 
   def check_for_win
-    if horizontal_win?
-      return true
+    if horizontal_win? || vertical_win? || diagonal_win_up? || diagonal_win_down?
+      true
+    else
+      false
     end
-
-    if vertical_win?
-      return true
-    end
-
-    if diagonal_win_up?
-      return true
-    end
-
-    if diagonal_win_down?
-      return true
-    end
-    false
   end
 
   def horizontal_win?
     5.downto(0).each do |row|
       (0..3).each do |column|
-        if @game_board[row][column] != '...' &&
-            @game_board[row][column] == @game_board[row][column+1] &&
-            @game_board[row][column] == @game_board[row][column+2] &&
-            @game_board[row][column] == @game_board[row][column+3]
+        if game_board[row][column] != '...' &&
+            game_board[row][column] == game_board[row][column+1] &&
+            game_board[row][column] == game_board[row][column+2] &&
+            game_board[row][column] == game_board[row][column+3]
           return true
         end
       end
@@ -50,10 +39,10 @@ module WinOrTie
   def vertical_win?
     (0..6).each do |column|
       5.downto(3).each do |row|
-        if @game_board[row][column] != '...' &&
-            @game_board[row][column] == @game_board[row-1][column] &&
-            @game_board[row][column] == @game_board[row-2][column] &&
-            @game_board[row][column] == @game_board[row-3][column]
+        if game_board[row][column] != '...' &&
+            game_board[row][column] == game_board[row-1][column] &&
+            game_board[row][column] == game_board[row-2][column] &&
+            game_board[row][column] == game_board[row-3][column]
           return true
         end
       end
@@ -64,10 +53,10 @@ module WinOrTie
   def diagonal_win_up?
     (0..3).each do |col|
       5.downto(3).each do |row|
-        if @game_board[row][col] != '...' &&
-            @game_board[row][col] == @game_board[row-1][col+1] &&
-            @game_board[row][col] == @game_board[row-2][col+2] &&
-            @game_board[row][col] == @game_board[row-3][col+3]
+        if game_board[row][col] != '...' &&
+            game_board[row][col] == game_board[row-1][col+1] &&
+            game_board[row][col] == game_board[row-2][col+2] &&
+            game_board[row][col] == game_board[row-3][col+3]
           return true
         end
       end
@@ -78,10 +67,10 @@ module WinOrTie
   def diagonal_win_down?
     (0..3).each do |col|
       (0..2).each do |row|
-        if @game_board[row][col] != '...' &&
-            @game_board[row][col] == @game_board[row+1][col+1] &&
-            @game_board[row][col] == @game_board[row+2][col+2] &&
-            @game_board[row][col] == @game_board[row+3][col+3]
+        if game_board[row][col] != '...' &&
+            game_board[row][col] == game_board[row+1][col+1] &&
+            game_board[row][col] == game_board[row+2][col+2] &&
+            game_board[row][col] == game_board[row+3][col+3]
           return true
         end
       end
@@ -90,7 +79,7 @@ module WinOrTie
   end
 
   def print_win_message
-    @player1 ? player = 'RED' : player = 'BLK'
+    player1 ? player = 'RED' : player = 'BLK'
     1.times { puts }
     puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     puts "!!!!!!!!!!!!!!!!!!! #{player} WINS !!!!!!!!!!!!!!!!!!!!"
@@ -100,7 +89,7 @@ module WinOrTie
 
   def check_for_tie
     (0..6).each do |i|
-      if @game_board[0][i] == '...'
+      if game_board[0][i] == '...'
         return false
       end
     end
