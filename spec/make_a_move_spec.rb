@@ -5,13 +5,47 @@ describe 'MakeAMove' do
   let(:game) { Game.new }
 
   describe '#make_a_move' do
+    context 'when the challenger is HUMAN' do
+      before do
+        game.player1 = false
+        game.challenger = 'HUMAN'
+
+        allow(HumanPlayer).to receive(:pick_a_column)
+        allow(game).to receive(:valid_move?).and_return(true)
+        allow(game).to receive(:place_chip_in_column)
+        allow(game).to receive(:invalid_selection)
+        game.make_a_move
+      end
+
+      it 'calls pick a column for the HumanPlayer' do
+        expect(HumanPlayer).to have_received(:pick_a_column).with(false)
+      end
+    end
+
+    context 'when the challenger is COMPUTER' do
+      before do
+        game.player1 = false
+        game.challenger = 'COMPUTER'
+
+        allow(ComputerPlayer).to receive(:pick_a_column)
+        allow(game).to receive(:valid_move?).and_return(true)
+        allow(game).to receive(:place_chip_in_column)
+        allow(game).to receive(:invalid_selection)
+        game.make_a_move
+      end
+
+      it 'calls pick a column for the ComputerPlayer' do
+        expect(ComputerPlayer).to have_received(:pick_a_column)
+      end
+    end
+
     context 'when it is NOT a valid move' do
       context 'it loops until there IS a valid move' do
         before do
           game.player1 = false
           game.challenger = 'HUMAN'
 
-          allow(Player).to receive(:pick_a_column)
+          allow(HumanPlayer).to receive(:pick_a_column)
           allow(game).to receive(:valid_move?).and_return(false, false, false, false, true)
           allow(game).to receive(:place_chip_in_column)
           allow(game).to receive(:invalid_selection)
@@ -19,7 +53,7 @@ describe 'MakeAMove' do
         end
 
         it 'calls pick a column until a valid move' do
-          expect(Player).to have_received(:pick_a_column).exactly(5).times
+          expect(HumanPlayer).to have_received(:pick_a_column).exactly(5).times
         end
 
         it 'checks if each move is valid' do
