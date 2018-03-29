@@ -13,7 +13,7 @@ class Game
   end
 
   def play
-    determine_challenger
+    @challenger = determine_challenger
 
     begin
       toggle_player

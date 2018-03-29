@@ -6,7 +6,7 @@ module DetermineChallenger
       valid_challenger = valid_challenger?(challenger)
       invalid_selection unless valid_challenger
     end until valid_challenger
-    @challenger = challenger == 1 ? 'COMPUTER' : 'HUMAN'
+    challenger == 1 ? 'COMPUTER' : 'HUMAN'
   end
 
   def ask_who_is_playing
