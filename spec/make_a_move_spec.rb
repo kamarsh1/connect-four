@@ -18,7 +18,31 @@ describe 'MakeAMove' do
       end
 
       it 'calls pick a column for the HumanPlayer' do
-        expect(HumanPlayer).to have_received(:pick_a_column).with(false)
+        expect(HumanPlayer).to have_received(:pick_a_column)
+      end
+
+      context 'when player1' do
+        before do
+          game.player1 = true
+        end
+
+        let(:pick_col_message) { "PLAYER 1, pick a column (1 through 7)\n" }
+
+        it 'asks player1 to pick a column' do
+          expect { game.make_a_move }.to output(pick_col_message).to_stdout
+        end
+      end
+
+      context 'when NOT player1' do
+        before do
+          game.player1 = false
+        end
+
+        let(:pick_col_message) { "PLAYER 2, pick a column (1 through 7)\n" }
+
+        it 'asks player2 to pick a column' do
+          expect { game.make_a_move }.to output(pick_col_message).to_stdout
+        end
       end
     end
 

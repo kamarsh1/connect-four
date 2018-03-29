@@ -6,9 +6,11 @@ module MakeAMove
   def make_a_move
     begin
       if challenger === 'HUMAN' || player1
-        column = HumanPlayer.pick_a_column(player1)
+        puts "#{player1 ? 'PLAYER 1' : 'PLAYER 2'}, pick a column (1 through 7)"
+        column = HumanPlayer.pick_a_column
       else
         column = ComputerPlayer.pick_a_column
+        puts "Computer picked #{column}"
       end
       valid_move = valid_move?(column)
       valid_move ? place_chip_in_column(column) : invalid_selection
