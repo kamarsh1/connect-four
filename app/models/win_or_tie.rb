@@ -79,7 +79,7 @@ module WinOrTie
   end
 
   def print_win_message
-    player1 ? player = 'RED' : player = 'BLK'
+    is_player1 ? player = 'RED' : player = 'BLK'
     1.times { puts }
     puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     puts "!!!!!!!!!!!!!!!!!!! #{player} WINS !!!!!!!!!!!!!!!!!!!!"

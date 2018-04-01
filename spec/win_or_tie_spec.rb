@@ -234,7 +234,7 @@ describe 'WinOrTie' do
       let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! RED WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
 
       before do
-        game.player1 = true
+        game.is_player1 = true
       end
 
       it 'prints RED wins message' do
@@ -246,7 +246,7 @@ describe 'WinOrTie' do
       let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! BLK WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
 
       before do
-        game.player1 = false
+        game.is_player1 = false
       end
 
       it 'prints BLK wins message' do

@@ -9,14 +9,17 @@ describe 'Game' do
       expect(game.game_board).to eq(initial_board)
     end
 
-    it 'sets player1' do
-      expect(game.player1).to eq(false)
+    it 'sets boolean for is_player1' do
+      expect(game.is_player1).to eq(false)
     end
   end
 
   describe '#play' do
     before do
       allow(game).to receive(:determine_challenger)
+      # toggle player no longer returns a boolean.
+      # it returns the current player which is an instance based
+      # whatever determine challenger returns
       allow(game).to receive(:toggle_player).and_return(true)
       allow(game).to receive(:display_board)
       allow(game).to receive(:make_a_move)
@@ -52,11 +55,11 @@ describe 'Game' do
   end
 
   describe '#toggle player' do
-    let(:player1) { false }
+    let(:is_player1) { false }
 
-    it 'toggles the boolean assigned to player1' do
-      game.toggle_player
-      expect(game.player1).to eq(true)
+    it 'toggles the boolean assigned to is_player1' do
+      game.toggle_player('whatever', 'whatever')
+      expect(game.is_player1).to eq(true)
     end
   end
 

@@ -3,81 +3,88 @@ require_relative '../app/models/make_a_move'
 
 describe 'MakeAMove' do
   let(:game) { Game.new }
+  let(:humanPlayer) { HumanPlayer.new }
+  let(:computerPlayer) { ComputerPlayer.new }
 
   describe '#make_a_move' do
-    context 'when the challenger is HUMAN' do
+    context 'when it is the HUMAN challengers turn' do
       before do
-        game.player1 = false
+        current_player = humanPlayer
+        game.is_player1 = false
         game.challenger = 'HUMAN'
 
-        allow(HumanPlayer).to receive(:pick_a_column)
+        allow(current_player).to receive(:pick_a_column).and_return(3)
         allow(game).to receive(:valid_move?).and_return(true)
         allow(game).to receive(:place_chip_in_column)
         allow(game).to receive(:invalid_selection)
-        game.make_a_move
+        game.make_a_move(current_player)
       end
 
       it 'calls pick a column for the HumanPlayer' do
-        expect(HumanPlayer).to have_received(:pick_a_column)
+        expect(humanPlayer).to have_received(:pick_a_column)
       end
 
-      context 'when player1' do
+      context "when it is player1's turn" do
         before do
-          game.player1 = true
+          game.is_player1 = true
         end
 
-        let(:pick_col_message) { "PLAYER 1, pick a column (1 through 7)\n" }
+        let(:pick_col_message) { "pick a column (1 through 7)\n" }
 
         it 'asks player1 to pick a column' do
-          expect { game.make_a_move }.to output(pick_col_message).to_stdout
+          player1 = HumanPlayer.new
+          expect { game.make_a_move(player1) }.to output(pick_col_message).to_stdout
         end
       end
 
-      context 'when NOT player1' do
+      context "when it is NOT player1's turn" do
         before do
           game.player1 = false
         end
 
-        let(:pick_col_message) { "PLAYER 2, pick a column (1 through 7)\n" }
+        let(:pick_col_message) { "pick a column (1 through 7)\n" }
 
         it 'asks player2 to pick a column' do
-          expect { game.make_a_move }.to output(pick_col_message).to_stdout
+          player2 = HumanPlayer.new
+          expect { game.make_a_move(player2) }.to output(pick_col_message).to_stdout
         end
       end
     end
 
-    context 'when the challenger is COMPUTER' do
+    context 'when it is the COMPUTER challengers turn' do
       before do
+        current_player = computerPlayer
         game.player1 = false
         game.challenger = 'COMPUTER'
 
-        allow(ComputerPlayer).to receive(:pick_a_column)
+        allow(current_player).to receive(:pick_a_column)
         allow(game).to receive(:valid_move?).and_return(true)
         allow(game).to receive(:place_chip_in_column)
         allow(game).to receive(:invalid_selection)
-        game.make_a_move
+        game.make_a_move(current_player)
       end
 
       it 'calls pick a column for the ComputerPlayer' do
-        expect(ComputerPlayer).to have_received(:pick_a_column)
+        expect(computerPlayer).to have_received(:pick_a_column)
       end
     end
 
     context 'when it is NOT a valid move' do
       context 'it loops until there IS a valid move' do
         before do
+          current_player = humanPlayer
           game.player1 = false
           game.challenger = 'HUMAN'
 
-          allow(HumanPlayer).to receive(:pick_a_column)
+          allow(current_player).to receive(:pick_a_column)
           allow(game).to receive(:valid_move?).and_return(false, false, false, false, true)
           allow(game).to receive(:place_chip_in_column)
           allow(game).to receive(:invalid_selection)
-          game.make_a_move
+          game.make_a_move(current_player)
         end
 
         it 'calls pick a column until a valid move' do
-          expect(HumanPlayer).to have_received(:pick_a_column).exactly(5).times
+          expect(humanPlayer).to have_received(:pick_a_column).exactly(5).times
         end
 
         it 'checks if each move is valid' do
@@ -145,7 +152,7 @@ describe 'MakeAMove' do
 
     context 'when player1' do
       before do
-        game.player1 = true
+        game.is_player1 = true
         game.game_board[5][column-1] = '...'
       end
 
@@ -157,7 +164,7 @@ describe 'MakeAMove' do
 
     context 'when NOT player1' do
       before do
-        game.player1 = false
+        game.is_player1 = false
         game.game_board[5][column-1] = '...'
       end
 
@@ -169,7 +176,7 @@ describe 'MakeAMove' do
 
     context 'when lower rows for the chosen column are full' do
       before do
-        game.player1 = true
+        game.is_player1 = true
         game.game_board[5][column-1] = 'BLK'
         game.game_board[4][column-1] = 'BLK'
         game.game_board[3][column-1] = 'BLK'
