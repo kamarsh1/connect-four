@@ -2,9 +2,10 @@ require_relative '../app/models/game'
 require_relative '../app/models/make_a_move'
 
 describe 'MakeAMove' do
+  let(:some_name) { 'some name' }
   let(:game) { Game.new }
-  let(:humanPlayer) { HumanPlayer.new }
-  let(:computerPlayer) { ComputerPlayer.new }
+  let(:humanPlayer) { HumanPlayer.new(some_name) }
+  let(:computerPlayer) { ComputerPlayer.new(some_name) }
 
   describe '#make_a_move' do
     context 'when it is the HUMAN challengers turn' do
@@ -32,7 +33,7 @@ describe 'MakeAMove' do
         let(:pick_col_message) { "pick a column (1 through 7)\n" }
 
         it 'asks player1 to pick a column' do
-          player1 = HumanPlayer.new
+          player1 = HumanPlayer.new(some_name)
           expect { game.make_a_move(player1) }.to output(pick_col_message).to_stdout
         end
       end
@@ -45,7 +46,7 @@ describe 'MakeAMove' do
         let(:pick_col_message) { "pick a column (1 through 7)\n" }
 
         it 'asks player2 to pick a column' do
-          player2 = HumanPlayer.new
+          player2 = HumanPlayer.new(some_name)
           expect { game.make_a_move(player2) }.to output(pick_col_message).to_stdout
         end
       end

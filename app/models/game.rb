@@ -14,14 +14,14 @@ class Game
   def play
     game_over = false
     challenger = determine_challenger
-    challenger == 'COMPUTER' ? player2 = ComputerPlayer.new : player2 = HumanPlayer.new
-    player1 = HumanPlayer.new
+    player1 = HumanPlayer.new('Player1')
+    player2 = challenger == 'COMPUTER' ? ComputerPlayer.new('Player2') : HumanPlayer.new('Player2')
 
     begin
       current_player = toggle_player(player1, player2)
       display_board
       make_a_move(current_player)
-      game_over = win_or_tie?
+      game_over = win_or_tie?(current_player)
     end until game_over
     display_board
   end

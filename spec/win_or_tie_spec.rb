@@ -3,13 +3,14 @@ require_relative '../app/models/win_or_tie'
 
 describe 'WinOrTie' do
   let(:game) { Game.new }
+  let(:current_player) { HumanPlayer.new('Player1') }
 
   describe '#win_or_tie?' do
     context 'when its a win' do
       before do
         allow(game).to receive(:check_for_win).and_return(true)
         allow(game).to receive(:print_win_message)
-        game.win_or_tie?
+        game.win_or_tie?(current_player)
       end
 
       it 'checks for a win' do
@@ -21,7 +22,7 @@ describe 'WinOrTie' do
       end
 
       it 'returns true' do
-        expect(game.win_or_tie?).to eq(true)
+        expect(game.win_or_tie?(current_player)).to eq(true)
       end
     end
 
@@ -30,7 +31,7 @@ describe 'WinOrTie' do
         allow(game).to receive(:check_for_win).and_return(false)
         allow(game).to receive(:check_for_tie).and_return(true)
         allow(game).to receive(:print_tie_message)
-        game.win_or_tie?
+        game.win_or_tie?(current_player)
       end
 
       it 'checks for a tie' do
@@ -42,7 +43,7 @@ describe 'WinOrTie' do
       end
 
       it 'returns true' do
-        expect(game.win_or_tie?).to eq(true)
+        expect(game.win_or_tie?(current_player)).to eq(true)
       end
     end
 
@@ -52,7 +53,7 @@ describe 'WinOrTie' do
         allow(game).to receive(:check_for_tie).and_return(false)
         allow(game).to receive(:print_win_message)
         allow(game).to receive(:print_tie_message)
-        game.win_or_tie?
+        game.win_or_tie?(current_player)
       end
 
       it 'checks for a win' do
@@ -72,7 +73,7 @@ describe 'WinOrTie' do
       end
 
       it 'returns false' do
-        expect(game.win_or_tie?).to eq(false)
+        expect(game.win_or_tie?(current_player)).to eq(false)
       end
     end
   end
@@ -231,26 +232,27 @@ describe 'WinOrTie' do
 
   describe '#print_win_message' do
     context 'when player1 wins' do
-      let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! RED WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
+      let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!! PLAYER1 WINS !!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
 
       before do
         game.is_player1 = true
       end
 
-      it 'prints RED wins message' do
-        expect { game.print_win_message }.to output(win_message).to_stdout
+      it 'prints player 1 wins message' do
+        expect { game.print_win_message(current_player) }.to output(win_message).to_stdout
       end
     end
 
     context 'when player2 wins' do
-      let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!! BLK WINS !!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
+      let(:current_player) { HumanPlayer.new('Player2') }
+      let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!! PLAYER2 WINS !!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
 
       before do
         game.is_player1 = false
       end
 
-      it 'prints BLK wins message' do
-        expect { game.print_win_message }.to output(win_message).to_stdout
+      it 'prints player 2 wins message' do
+        expect { game.print_win_message(current_player) }.to output(win_message).to_stdout
       end
     end
   end

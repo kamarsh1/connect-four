@@ -1,8 +1,8 @@
 module WinOrTie
-  def win_or_tie?
+  def win_or_tie?(current_player)
     win = check_for_win
     if win
-      print_win_message
+      print_win_message(current_player)
       return true
     end
 
@@ -78,11 +78,10 @@ module WinOrTie
     false
   end
 
-  def print_win_message
-    is_player1 ? player = 'RED' : player = 'BLK'
+  def print_win_message(current_player)
     1.times { puts }
     puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    puts "!!!!!!!!!!!!!!!!!!! #{player} WINS !!!!!!!!!!!!!!!!!!!!"
+    puts "!!!!!!!!!!!!!!!!! #{current_player.name.upcase} WINS !!!!!!!!!!!!!!!!!!"
     puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     1.times { puts }
   end

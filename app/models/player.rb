@@ -1,3 +1,7 @@
 class Player
-#   going to have to set the name in here so player will know if it's player1 or player2
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
 end
