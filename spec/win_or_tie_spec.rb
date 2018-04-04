@@ -3,7 +3,7 @@ require_relative '../app/models/win_or_tie'
 
 describe 'WinOrTie' do
   let(:game) { Game.new }
-  let(:current_player) { HumanPlayer.new('Player1') }
+  let(:current_player) { HumanPlayer.new('Player1', 'RED') }
 
   describe '#win_or_tie?' do
     context 'when its a win' do
@@ -234,22 +234,14 @@ describe 'WinOrTie' do
     context 'when player1 wins' do
       let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!! PLAYER1 WINS !!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
 
-      before do
-        game.is_player1 = true
-      end
-
       it 'prints player 1 wins message' do
         expect { game.print_win_message(current_player) }.to output(win_message).to_stdout
       end
     end
 
     context 'when player2 wins' do
-      let(:current_player) { HumanPlayer.new('Player2') }
+      let(:current_player) { HumanPlayer.new('Player2', 'BLK') }
       let(:win_message) { "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!! PLAYER2 WINS !!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n" }
-
-      before do
-        game.is_player1 = false
-      end
 
       it 'prints player 2 wins message' do
         expect { game.print_win_message(current_player) }.to output(win_message).to_stdout

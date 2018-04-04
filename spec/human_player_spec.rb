@@ -2,7 +2,7 @@ require_relative '../app/models/player'
 require_relative '../app/models/human_player'
 
 describe 'HumanPlayer' do
-  let(:humanPlayer) { HumanPlayer.new('some name') }
+  let(:humanPlayer) { HumanPlayer.new('some name', 'RED') }
 
   describe 'pick_a_column' do
     before do

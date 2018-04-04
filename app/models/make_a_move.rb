@@ -7,7 +7,7 @@ module MakeAMove
     begin
       column = current_player.pick_a_column(current_player)
       valid_move = valid_move?(column)
-      valid_move ? place_chip_in_column(column) : invalid_selection
+      valid_move ? place_chip_in_column(column, current_player) : invalid_selection
     end until valid_move
   end
 
@@ -15,10 +15,10 @@ module MakeAMove
     column.between?(1,7) && game_board[0][column-1] == '...'
   end
 
-  def place_chip_in_column(column)
+  def place_chip_in_column(column, current_player)
     5.downto(0).each do |row|
       if game_board[row][column-1] == '...'
-        game_board[row][column-1] = is_player1 ? 'RED' : 'BLK'
+        game_board[row][column-1] = current_player.color
         break
       end
     end

@@ -14,8 +14,8 @@ class Game
   def play
     game_over = false
     challenger = determine_challenger
-    player1 = HumanPlayer.new('Player1')
-    player2 = challenger == 'COMPUTER' ? ComputerPlayer.new('Player2') : HumanPlayer.new('Player2')
+    player1 = HumanPlayer.new('Player1', 'RED')
+    player2 = challenger == 'COMPUTER' ? ComputerPlayer.new('Player2', 'BLK') : HumanPlayer.new('Player2', 'BLK')
 
     begin
       current_player = toggle_player(player1, player2)

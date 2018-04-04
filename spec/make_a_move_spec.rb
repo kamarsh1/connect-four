@@ -3,9 +3,10 @@ require_relative '../app/models/make_a_move'
 
 describe 'MakeAMove' do
   let(:some_name) { 'Pikachu' }
+  let(:some_color) { 'RED' }
   let(:game) { Game.new }
-  let(:humanPlayer) { HumanPlayer.new(some_name) }
-  let(:computerPlayer) { ComputerPlayer.new(some_name) }
+  let(:humanPlayer) { HumanPlayer.new(some_name, some_color) }
+  let(:computerPlayer) { ComputerPlayer.new(some_name, some_color) }
 
   describe '#make_a_move' do
     context 'when it is the HUMAN challengers turn' do
@@ -33,7 +34,7 @@ describe 'MakeAMove' do
         let(:pick_col_message) { "#{some_name} pick a column (1 through 7)\n" }
 
         it 'asks player1 to pick a column' do
-          player1 = HumanPlayer.new(some_name)
+          player1 = HumanPlayer.new(some_name, some_color)
           expect { game.make_a_move(player1) }.to output(pick_col_message).to_stdout
         end
       end
@@ -46,7 +47,7 @@ describe 'MakeAMove' do
         let(:pick_col_message) { "#{some_name} pick a column (1 through 7)\n" }
 
         it 'asks player2 to pick a column' do
-          player2 = HumanPlayer.new(some_name)
+          player2 = HumanPlayer.new(some_name, some_color)
           expect { game.make_a_move(player2) }.to output(pick_col_message).to_stdout
         end
       end
@@ -152,25 +153,31 @@ describe 'MakeAMove' do
     let(:column) { 1 }
 
     context 'when player1' do
+      let(:humanPlayer) { HumanPlayer.new('Bob', 'RED') }
+
       before do
         game.is_player1 = true
         game.game_board[5][column-1] = '...'
       end
 
       it 'places a RED chip in bottom-most empty row for chosen column' do
-        game.place_chip_in_column(column)
+        current_player = humanPlayer
+        game.place_chip_in_column(column, current_player)
         expect(game.game_board[5][column-1]).to eq('RED')
       end
     end
 
     context 'when NOT player1' do
+      let(:humanPlayer) { HumanPlayer.new('Bob', 'BLK') }
+
       before do
         game.is_player1 = false
         game.game_board[5][column-1] = '...'
       end
 
       it 'places a BLK chip in bottom-most empty row for chosen column' do
-        game.place_chip_in_column(column)
+        current_player = humanPlayer
+        game.place_chip_in_column(column, current_player)
         expect(game.game_board[5][column-1]).to eq('BLK')
       end
     end
@@ -184,7 +191,8 @@ describe 'MakeAMove' do
       end
 
       it 'puts chip in next available row for the chosen column' do
-        game.place_chip_in_column(column)
+        current_player = humanPlayer
+        game.place_chip_in_column(column, current_player)
         expect(game.game_board[5][column-1]).not_to eq('RED')
         expect(game.game_board[4][column-1]).not_to eq('RED')
         expect(game.game_board[3][column-1]).not_to eq('RED')
