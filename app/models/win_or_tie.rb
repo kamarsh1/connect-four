@@ -15,9 +15,7 @@ module WinOrTie
   end
 
   def check_for_win
-    return true if horizontal_win? || vertical_win? || diagonal_win_up? || diagonal_win_down?
-
-    false
+    return horizontal_win? || vertical_win? || diagonal_win_up? || diagonal_win_down?
   end
 
   def horizontal_win?
