@@ -2,7 +2,7 @@ require_relative '../app/models/game'
 require_relative '../app/models/make_a_move'
 
 describe 'MakeAMove' do
-  let(:some_name) { 'some name' }
+  let(:some_name) { 'Pikachu' }
   let(:game) { Game.new }
   let(:humanPlayer) { HumanPlayer.new(some_name) }
   let(:computerPlayer) { ComputerPlayer.new(some_name) }
@@ -30,7 +30,7 @@ describe 'MakeAMove' do
           game.is_player1 = true
         end
 
-        let(:pick_col_message) { "pick a column (1 through 7)\n" }
+        let(:pick_col_message) { "#{some_name} pick a column (1 through 7)\n" }
 
         it 'asks player1 to pick a column' do
           player1 = HumanPlayer.new(some_name)
@@ -43,7 +43,7 @@ describe 'MakeAMove' do
           game.player1 = false
         end
 
-        let(:pick_col_message) { "pick a column (1 through 7)\n" }
+        let(:pick_col_message) { "#{some_name} pick a column (1 through 7)\n" }
 
         it 'asks player2 to pick a column' do
           player2 = HumanPlayer.new(some_name)

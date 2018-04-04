@@ -10,7 +10,8 @@ describe 'HumanPlayer' do
     end
 
     it 'gets a number from input' do
-      expect(humanPlayer.pick_a_column).to eq(2)
+      current_player = humanPlayer
+      expect(humanPlayer.pick_a_column(current_player)).to eq(2)
     end
   end
 end

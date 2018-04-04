@@ -6,7 +6,8 @@ describe 'ComputerPlayer' do
 
   describe 'pick_a_column' do
     it 'picks a random number between 1 and 7' do
-      expect(computerPlayer.pick_a_column).to be_between(1, 7)
+      current_player = computerPlayer
+      expect(computerPlayer.pick_a_column(current_player)).to be_between(1, 7)
     end
   end
 end

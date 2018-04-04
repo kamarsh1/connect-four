@@ -5,7 +5,7 @@ require_relative '../../app/models/human_player'
 module MakeAMove
   def make_a_move(current_player)
     begin
-      column = current_player.pick_a_column
+      column = current_player.pick_a_column(current_player)
       valid_move = valid_move?(column)
       valid_move ? place_chip_in_column(column) : invalid_selection
     end until valid_move
