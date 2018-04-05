@@ -9,60 +9,40 @@ describe 'MakeAMove' do
   let(:computerPlayer) { ComputerPlayer.new(some_name, some_color) }
 
   describe '#make_a_move' do
-    context 'when it is the HUMAN challengers turn' do
+    context 'when it is a HUMANs turn' do
       before do
         current_player = humanPlayer
-        game.is_player1 = false
-        game.challenger = 'HUMAN'
-
-        allow(current_player).to receive(:pick_a_column).and_return(3)
-        allow(game).to receive(:valid_move?).and_return(true)
-        allow(game).to receive(:place_chip_in_column)
-        allow(game).to receive(:invalid_selection)
+        allow(current_player).to receive(:pick_a_column).with(current_player).and_return(3)
         game.make_a_move(current_player)
       end
 
-      it 'calls pick a column for the HumanPlayer' do
-        expect(humanPlayer).to have_received(:pick_a_column)
-      end
-
-      context "when it is player1's turn" do
+      context 'when it is player 1s turn' do
         before do
           game.is_player1 = true
         end
 
-        let(:pick_col_message) { "#{some_name} pick a column (1 through 7)\n" }
-
-        it 'asks player1 to pick a column' do
-          player1 = HumanPlayer.new(some_name, some_color)
-          expect { game.make_a_move(player1) }.to output(pick_col_message).to_stdout
+        it 'calls pick a column for the HumanPlayer' do
+          expect(humanPlayer).to have_received(:pick_a_column)
         end
       end
 
-      context "when it is NOT player1's turn" do
+      context 'when it is player 2s turn' do
         before do
           game.player1 = false
         end
 
-        let(:pick_col_message) { "#{some_name} pick a column (1 through 7)\n" }
-
-        it 'asks player2 to pick a column' do
-          player2 = HumanPlayer.new(some_name, some_color)
-          expect { game.make_a_move(player2) }.to output(pick_col_message).to_stdout
+        it 'calls pick a column for the HumanPlayer' do
+          expect(humanPlayer).to have_received(:pick_a_column)
         end
       end
     end
 
-    context 'when it is the COMPUTER challengers turn' do
+    context 'when it is the COMPUTERs turn' do
       before do
         current_player = computerPlayer
         game.player1 = false
-        game.challenger = 'COMPUTER'
 
-        allow(current_player).to receive(:pick_a_column)
-        allow(game).to receive(:valid_move?).and_return(true)
-        allow(game).to receive(:place_chip_in_column)
-        allow(game).to receive(:invalid_selection)
+        allow(current_player).to receive(:pick_a_column).with(current_player).and_return(4)
         game.make_a_move(current_player)
       end
 
@@ -76,7 +56,6 @@ describe 'MakeAMove' do
         before do
           current_player = humanPlayer
           game.player1 = false
-          game.challenger = 'HUMAN'
 
           allow(current_player).to receive(:pick_a_column)
           allow(game).to receive(:valid_move?).and_return(false, false, false, false, true)
@@ -160,29 +139,31 @@ describe 'MakeAMove' do
         game.game_board[5][column-1] = '...'
       end
 
-      it 'places a RED chip in bottom-most empty row for chosen column' do
+      it 'places the current players color chip in bottom-most empty row for chosen column' do
         current_player = humanPlayer
         game.place_chip_in_column(column, current_player)
         expect(game.game_board[5][column-1]).to eq('RED')
       end
     end
 
-    context 'when NOT player1' do
-      let(:humanPlayer) { HumanPlayer.new('Bob', 'BLK') }
+    context 'when player 2' do
+      let(:humanPlayer) { HumanPlayer.new('Bob', 'yellow') }
 
       before do
         game.is_player1 = false
         game.game_board[5][column-1] = '...'
       end
 
-      it 'places a BLK chip in bottom-most empty row for chosen column' do
+      it 'places the current players color chip in bottom-most empty row for chosen column' do
         current_player = humanPlayer
         game.place_chip_in_column(column, current_player)
-        expect(game.game_board[5][column-1]).to eq('BLK')
+        expect(game.game_board[5][column-1]).to eq('yellow')
       end
     end
 
     context 'when lower rows for the chosen column are full' do
+      let(:humanPlayer) { HumanPlayer.new('Bob', 'magenta') }
+
       before do
         game.is_player1 = true
         game.game_board[5][column-1] = 'BLK'
@@ -193,10 +174,10 @@ describe 'MakeAMove' do
       it 'puts chip in next available row for the chosen column' do
         current_player = humanPlayer
         game.place_chip_in_column(column, current_player)
-        expect(game.game_board[5][column-1]).not_to eq('RED')
-        expect(game.game_board[4][column-1]).not_to eq('RED')
-        expect(game.game_board[3][column-1]).not_to eq('RED')
-        expect(game.game_board[2][column-1]).to eq('RED')
+        expect(game.game_board[5][column-1]).not_to eq('magenta')
+        expect(game.game_board[4][column-1]).not_to eq('magenta')
+        expect(game.game_board[3][column-1]).not_to eq('magenta')
+        expect(game.game_board[2][column-1]).to eq('magenta')
       end
     end
   end
