@@ -21,7 +21,6 @@ class Game
       current_player = toggle_player(player1, player2)
       display_board
       make_a_move(current_player)
-      stuff = {'game_board': @game_board}
       game_over = win_or_tie?(current_player)
     end until game_over
     display_board
