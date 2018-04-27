@@ -1,5 +1,5 @@
 require_relative '../app/models/game'
-require_relative '../app/models/make_a_move'
+require_relative '../app/services/make_a_move'
 
 describe 'MakeAMove' do
   let(:some_name) { 'Pikachu' }
